@@ -1,7 +1,11 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
 
 module.exports = () => {
+  dotenv.config();
+
   return {
     mode: process.env.NODE_ENV,
     target: 'node',
@@ -30,5 +34,10 @@ module.exports = () => {
         },
       ],
     },
+    plugins: [
+      new webpack.EnvironmentPlugin({
+        SESSION_KEY: process.env.SESSION_KEY
+      }),
+    ],
   };
 };
