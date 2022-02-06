@@ -4,8 +4,8 @@ import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 import path from 'path';
 import session from 'express-session';
-
-const PORT = 8080;
+import { PORT } from 'shared/constant';
+import userRouter from './user';
 
 const app = express();
 
@@ -25,6 +25,7 @@ app.use(
     saveUninitialized: false,
   })
 );
+app.use('/user', userRouter);
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.listen(PORT, () => console.log('SERVER CONNECTED'));
