@@ -1,0 +1,49 @@
+{
+  "name": "catch-mind",
+  "version": "0.0.1",
+  "description": "web catchmind",
+  "scripts": {
+    "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
+    "build": "webpack --mode production --config ./webpack.server.js && webpack --config ./webpack.client.prod.js && node dist/server.js",
+    "tsc": "tsc --noEmit"
+  },
+  "author": "GleamingStar (tjdduddl10@gmail.com)",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.25.0",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.2",
+    "express-session": "^1.17.2",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "recoil": "^0.6.1",
+    "socket.io": "^4.4.1",
+    "socket.io-client": "^4.4.1",
+    "styled-components": "^5.3.3",
+    "styled-reset": "^4.3.4",
+    "typescript": "^4.5.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.17.0",
+    "@babel/core": "^7.17.0",
+    "@babel/plugin-transform-runtime": "^7.17.0",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/preset-typescript": "^7.16.7",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.5.4",
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.15",
+    "@types/react": "^17.0.39",
+    "@types/react-dom": "^17.0.11",
+    "@types/socket.io-client": "^3.0.0",
+    "@types/styled-components": "^5.1.21",
+    "babel-loader": "^8.2.3",
+    "html-webpack-plugin": "^5.5.0",
+    "react-refresh": "^0.11.0",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2",
+    "webpack-dev-middleware": "^5.3.1",
+    "webpack-hot-middleware": "^2.25.1",
+    "webpack-node-externals": "^3.0.0"
+  }
+}
