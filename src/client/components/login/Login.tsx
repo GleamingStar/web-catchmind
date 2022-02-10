@@ -4,10 +4,28 @@ import { useSetRecoilState } from 'recoil';
 import { ERROR_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
 import styled from 'styled-components';
 
-const LoginWrapper = styled.div``;
-const LoginInput = styled.input``;
-const LoginButton = styled.button``;
-const LoginAlert = styled.div``;
+const LoginWrapper = styled.div`
+  position: relative;
+  width: 400px;
+  height: 300px;
+`;
+const LoginInput = styled.input`
+  position: absolute;
+  top: 40%;
+  left: 10%;
+`;
+const LoginButton = styled.button`
+  position: absolute;
+  top: 40%;
+  right: 10%;
+`;
+const LoginAlert = styled.div`
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translateX(-50%);
+  white-space: nowrap;
+`;
 
 const ALERT_MESSAGE_USER = {
   LENGTH: `${MAX_USER_NAME_LENGTH}자 이하 이름을 입력해주세요`,
@@ -38,7 +56,7 @@ const Login = () => {
   };
 
   const login = async () => {
-    if (!isValid) return;
+    if (!isValid()) return;
 
     setLoading(true);
     setAlert(ALERT_MESSAGE_USER.NONE);
