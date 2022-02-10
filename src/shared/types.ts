@@ -3,3 +3,9 @@ export type TUser = {
   name: string;
   imgUrl: string;
 };
+
+export type TRoom = {
+  id: number;
+  name: string;
+  users: Array<TUser>;
+};

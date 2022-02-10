@@ -5,7 +5,8 @@ import hotMiddleware from 'webpack-hot-middleware';
 import path from 'path';
 import session from 'express-session';
 import { PORT } from 'shared/constant';
-import userRouter from './user';
+import userRouter from './router/user';
+import roomRouter from './router/room';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(
   })
 );
 app.use('/user', userRouter);
+app.use('/room', roomRouter);
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
 app.listen(PORT, () => console.log('SERVER CONNECTED'));
