@@ -1,5 +1,7 @@
-import { Suspense } from 'react';
+import { accountAtom } from 'client/atom/accountAtom';
+import { useRecoilValue } from 'recoil';
 import styled from 'styled-components';
+import Lobby from './lobby/Lobby';
 import Login from './login/Login';
 
 const MainWrapper = styled.div`
@@ -9,17 +11,14 @@ const MainWrapper = styled.div`
   height: 600px;
 
   background-color: #c8f2ef;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 
 const Main = () => {
+  const account = useRecoilValue(accountAtom);
   return (
     <MainWrapper>
-      <Suspense fallback={<div>로딩중</div>}>
-        <Login />
-      </Suspense>
+      {!account && <Login />}
+      {account && <Lobby />}
     </MainWrapper>
   );
 };

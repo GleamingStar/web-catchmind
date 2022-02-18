@@ -13,6 +13,7 @@ router.post('/', (req, res) => {
 
   if (rooms.find((room) => room.name === name)) {
     res.status(409).json({
+      rooms,
       message: ERROR_MESSAGE.DUPLICATED_ROOM,
     });
   } else {
