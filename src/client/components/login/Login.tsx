@@ -5,9 +5,13 @@ import { ERROR_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
 import styled from 'styled-components';
 
 const LoginWrapper = styled.div`
-  position: relative;
+  position: absolute;
   width: 400px;
   height: 300px;
+
+  top:50%;
+  left:50%;
+  transform: translate(-50%,-50%);
 `;
 const LoginInput = styled.input`
   position: absolute;
@@ -27,10 +31,11 @@ const LoginAlert = styled.div`
   white-space: nowrap;
 `;
 
-const ALERT_MESSAGE_USER = {
+const ALERT_MESSAGE = {
   LENGTH: `${MAX_USER_NAME_LENGTH}자 이하 이름을 입력해주세요`,
   EMPTY: '닉네임을 제대로 입력해주세요',
   DUPLICATE: '이미 사용하고 있는 닉네임입니다',
+  DISCONNECTED: '인터넷 연결을 확인해주세요',
   NONE: '',
 };
 
@@ -38,18 +43,18 @@ const Login = () => {
   const setAccount = useSetRecoilState(accountAtom);
   const [inputValue, setInputValue] = useState('');
   const [isLoading, setLoading] = useState(false);
-  const [alert, setAlert] = useState(ALERT_MESSAGE_USER.NONE);
+  const [alert, setAlert] = useState(ALERT_MESSAGE.NONE);
 
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
 
   const isValid = () => {
     if (isLoading) return false;
     if (inputValue.trim().length === 0) {
-      setAlert(ALERT_MESSAGE_USER.EMPTY);
+      setAlert(ALERT_MESSAGE.EMPTY);
       return false;
     }
     if (inputValue.length > MAX_USER_NAME_LENGTH) {
-      setAlert(ALERT_MESSAGE_USER.LENGTH);
+      setAlert(ALERT_MESSAGE.LENGTH);
       return false;
     }
     return true;
@@ -59,7 +64,7 @@ const Login = () => {
     if (!isValid()) return;
 
     setLoading(true);
-    setAlert(ALERT_MESSAGE_USER.NONE);
+    setAlert(ALERT_MESSAGE.NONE);
 
     try {
       const response = await fetch('/user', {
@@ -79,10 +84,11 @@ const Login = () => {
       setAccount(user);
     } catch ({ message }) {
       if (message === ERROR_MESSAGE.DUPLICATED_USER) {
-        setAlert(ALERT_MESSAGE_USER.DUPLICATE);
+        setAlert(ALERT_MESSAGE.DUPLICATE);
       } else if (message === ERROR_MESSAGE.ALREADY_LOGINED) {
         setAccount(await checkSession());
       } else {
+        setAlert(ALERT_MESSAGE.DISCONNECTED);
         console.error('network error occurred');
       }
     } finally {
