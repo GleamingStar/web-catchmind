@@ -1,4 +1,5 @@
 import express from 'express';
+import { createServer } from 'http';
 import { webpack } from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
@@ -7,8 +8,10 @@ import session from 'express-session';
 import { PORT } from 'shared/constant';
 import userRouter from './router/user';
 import roomRouter from './router/room';
+import setSocket from './socket/socket';
 
 const app = express();
+const server = createServer(app);
 
 if (process.env.NODE_ENV === 'development') {
   const config = require('../../webpack.client.dev');
@@ -30,4 +33,6 @@ app.use('/user', userRouter);
 app.use('/room', roomRouter);
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(PORT, () => console.log('SERVER CONNECTED'));
+setSocket(server);
+
+server.listen(PORT, () => console.log('SERVER CONNECTED'));
