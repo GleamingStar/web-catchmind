@@ -1,17 +1,18 @@
-import { accountAtom, checkSession } from 'client/atom/accountAtom';
+import styled from 'styled-components';
 import { ChangeEvent, useState } from 'react';
 import { useSetRecoilState } from 'recoil';
+import { accountAtom, checkSession } from 'client/atom/accountAtom';
+import socket from 'client/config/socket';
 import { ERROR_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
-import styled from 'styled-components';
 
 const LoginWrapper = styled.div`
   position: absolute;
   width: 400px;
   height: 300px;
 
-  top:50%;
-  left:50%;
-  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 `;
 const LoginInput = styled.input`
   position: absolute;
@@ -81,7 +82,9 @@ const Login = () => {
 
       const { user } = await response.json();
 
+      setLoading(false);
       setAccount(user);
+      socket.emit('login', user);
     } catch ({ message }) {
       if (message === ERROR_MESSAGE.DUPLICATED_USER) {
         setAlert(ALERT_MESSAGE.DUPLICATE);
@@ -91,7 +94,6 @@ const Login = () => {
         setAlert(ALERT_MESSAGE.DISCONNECTED);
         console.error('network error occurred');
       }
-    } finally {
       setLoading(false);
     }
   };

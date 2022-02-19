@@ -9,9 +9,6 @@ module.exports = () => {
   return {
     mode: process.env.NODE_ENV,
     target: 'node',
-    node: {
-      __dirname: false,
-    },
     entry: './src/server/server.ts',
     output: {
       filename: 'server.js',
@@ -36,7 +33,8 @@ module.exports = () => {
     },
     plugins: [
       new webpack.EnvironmentPlugin({
-        SESSION_KEY: process.env.SESSION_KEY
+        SESSION_KEY: process.env.SESSION_KEY,
+        SERVER_URL: process.env.SERVER_URL
       }),
     ],
   };

@@ -1,5 +1,8 @@
 export const PORT = '8080';
 
+export const SERVER_URL =
+  process.env.NODE_ENV === 'development' ? `http://localhost:${PORT}` : `${process.env.SERVER_URL}:${PORT}`;
+
 export const PROFILE_IMAGE_SIZE = 13;
 
 export const MAX_USER_NAME_LENGTH = 10;

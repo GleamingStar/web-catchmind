@@ -1,4 +1,5 @@
 import { atom } from 'recoil';
+import socket from 'client/config/socket';
 import { ERROR_MESSAGE } from 'shared/constant';
 import { TUser } from 'shared/types';
 
@@ -13,6 +14,8 @@ export const checkSession = async () => {
     }
 
     const { user } = await response.json();
+
+    socket.emit('login', user);
 
     return user;
   } catch (err) {
