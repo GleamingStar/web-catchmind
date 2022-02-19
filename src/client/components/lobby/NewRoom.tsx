@@ -1,8 +1,7 @@
 import styled from 'styled-components';
 import { ChangeEvent, useState } from 'react';
-import { useSetRecoilState } from 'recoil';
-import { ERROR_MESSAGE, MAX_ROOM_NAME_LENGTH } from 'shared/constant';
-import { roomListAtom } from 'client/atom/roomAtom';
+import socket from 'client/config/socket';
+import { MAX_ROOM_NAME_LENGTH } from 'shared/constant';
 
 const NewRoomWrapper = styled.div`
   position: relative;
@@ -52,22 +51,17 @@ const NewRoomAlert = styled.div`
 const ALERT_MESSAGE = {
   LENGTH: `${MAX_ROOM_NAME_LENGTH}자 이내의 이름을 입력해주세요`,
   EMPTY: '방 이름을 제대로 입력해주세요',
-  DUPLICATE: '이미 사용하고 있는 방 이름입니다',
-  DISCONNECTED: '인터넷 연결을 확인해주세요',
   NONE: '',
 };
 
 const NewRoom = () => {
   const [inputValue, setInputValue] = useState('');
   const [isActivated, setActivated] = useState(false);
-  const [isLoading, setLoading] = useState(false);
   const [alert, setAlert] = useState(ALERT_MESSAGE.NONE);
-  const setRoomList = useSetRecoilState(roomListAtom);
 
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
 
   const isValid = () => {
-    if (isLoading) return false;
     if (inputValue.trim().length === 0) {
       setAlert(ALERT_MESSAGE.EMPTY);
       setInputValue('');
@@ -80,37 +74,7 @@ const NewRoom = () => {
     return true;
   };
 
-  const createRoom = async () => {
-    if (!isValid()) return;
-    setLoading(true);
-
-    try {
-      const response = await fetch('/room', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: inputValue.trim() }),
-      });
-
-      const { rooms, message } = await response.json();
-
-      setRoomList(rooms);
-
-      if (!response.ok) throw new Error(message);
-
-      setInputValue('');
-      setActivated(false);
-      setAlert(ALERT_MESSAGE.NONE);
-    } catch ({ message }) {
-      if (message === ERROR_MESSAGE.DUPLICATED_ROOM) {
-        setAlert(ALERT_MESSAGE.DUPLICATE);
-      } else {
-        setAlert(ALERT_MESSAGE.DISCONNECTED);
-        console.error('network error occurred');
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+  const createRoom = () => isValid() && socket.emit('room/create', inputValue.trim());
 
   return (
     <NewRoomWrapper>
