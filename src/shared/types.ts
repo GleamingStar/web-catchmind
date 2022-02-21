@@ -1,6 +1,6 @@
 declare module 'node:http' {
   interface IncomingMessage {
-    session: { user: TUser; };
+    session: { user: TUser; roomId: number };
   }
 }
 
