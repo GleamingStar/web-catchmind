@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { ChangeEvent, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { roomAlertAtom } from 'client/atom/alertAtom';
 import socket from 'client/config/socket';
-import { MAX_ROOM_NAME_LENGTH } from 'shared/constant';
+import { MAX_ROOM_NAME_LENGTH, ROOM_ALERT_MESSAGE } from 'shared/constant';
 
 const NewRoomWrapper = styled.div`
   position: relative;
@@ -48,27 +50,21 @@ const NewRoomAlert = styled.div`
   white-space: nowrap;
 `;
 
-const ALERT_MESSAGE = {
-  LENGTH: `${MAX_ROOM_NAME_LENGTH}자 이내의 이름을 입력해주세요`,
-  EMPTY: '방 이름을 제대로 입력해주세요',
-  NONE: '',
-};
-
 const NewRoom = () => {
   const [inputValue, setInputValue] = useState('');
   const [isActivated, setActivated] = useState(false);
-  const [alert, setAlert] = useState(ALERT_MESSAGE.NONE);
+  const [alert, setAlert] = useRecoilState(roomAlertAtom);
 
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
 
   const isValid = () => {
     if (inputValue.trim().length === 0) {
-      setAlert(ALERT_MESSAGE.EMPTY);
+      setAlert(ROOM_ALERT_MESSAGE.EMPTY);
       setInputValue('');
       return false;
     }
     if (inputValue.length > MAX_ROOM_NAME_LENGTH) {
-      setAlert(ALERT_MESSAGE.LENGTH);
+      setAlert(ROOM_ALERT_MESSAGE.LENGTH);
       return false;
     }
     return true;

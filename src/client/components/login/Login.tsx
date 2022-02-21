@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { ChangeEvent, useState } from 'react';
+import { useRecoilState } from 'recoil';
+import { loginAlertAtom } from 'client/atom/alertAtom';
 import socket from 'client/config/socket';
-import { MAX_USER_NAME_LENGTH } from 'shared/constant';
+import { LOGIN_ALERT_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
 
 const LoginWrapper = styled.div`
   position: absolute;
@@ -30,28 +32,21 @@ const LoginAlert = styled.div`
   white-space: nowrap;
 `;
 
-const ALERT_MESSAGE = {
-  LENGTH: `${MAX_USER_NAME_LENGTH}자 이하 이름을 입력해주세요`,
-  EMPTY: '닉네임을 제대로 입력해주세요',
-  NONE: '',
-};
-
 const Login = () => {
   const [inputValue, setInputValue] = useState('');
-  const [alert, setAlert] = useState(ALERT_MESSAGE.NONE);
+  const [alert, setAlert] = useRecoilState(loginAlertAtom);
 
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
 
   const isValid = () => {
     if (inputValue.trim().length === 0) {
-      setAlert(ALERT_MESSAGE.EMPTY);
+      setAlert(LOGIN_ALERT_MESSAGE.EMPTY);
       return false;
     }
     if (inputValue.length > MAX_USER_NAME_LENGTH) {
-      setAlert(ALERT_MESSAGE.LENGTH);
+      setAlert(LOGIN_ALERT_MESSAGE.LENGTH);
       return false;
     }
-    setAlert(ALERT_MESSAGE.NONE);
     return true;
   };
 

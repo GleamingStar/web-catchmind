@@ -10,7 +10,7 @@ const setUserEvent = (socket: Socket) => {
   const session = socket.request.session;
 
   socket.on('login', (name: string) => {
-    if (userList.filter((user) => user.name === name).length > 0) return socket.emit('login/fail');
+    if (userList.filter((user) => user.name === name).length > 0) return socket.emit('login/fail/duplicate');
 
     const user = {
       id: userId,
