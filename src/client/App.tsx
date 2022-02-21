@@ -1,14 +1,13 @@
-import { Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
 import Main from './components/Main';
 import GlobalStyle from './config/GlobalStyle';
+import Listener from './config/Listener';
 
 const App = () => (
   <RecoilRoot>
     <GlobalStyle />
-    <Suspense fallback={<div>세션 로딩중</div>}>
-      <Main />
-    </Suspense>
+    <Main />
+    <Listener />
   </RecoilRoot>
 );
 
