@@ -1,3 +1,9 @@
+declare module 'node:http' {
+  interface IncomingMessage {
+    session: { user: TUser; };
+  }
+}
+
 export enum MessageType {
   System = 'SYSTEM',
   User = 'USER',
@@ -12,7 +18,7 @@ export type TChat = {
 };
 
 export type TUser = {
-  id: string;
+  id: number;
   name: string;
   imgUrl: string;
 };

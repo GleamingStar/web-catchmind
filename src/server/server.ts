@@ -4,9 +4,8 @@ import { webpack } from 'webpack';
 import devMiddleware from 'webpack-dev-middleware';
 import hotMiddleware from 'webpack-hot-middleware';
 import path from 'path';
-import session from 'express-session';
+import setSession from 'express-session';
 import { PORT } from 'shared/constant';
-import userRouter from './router/user';
 import setSocket from './socket/socket';
 
 const app = express();
@@ -21,16 +20,16 @@ if (process.env.NODE_ENV === 'development') {
 app.use(express.json());
 
 app.use(express.static(path.join(__dirname, '../dist')));
-app.use(
-  session({
-    secret: process.env.SESSION_KEY,
-    resave: false,
-    saveUninitialized: false,
-  })
-);
-app.use('/user', userRouter);
+
+const session = setSession({
+  secret: process.env.SESSION_KEY,
+  resave: false,
+  saveUninitialized: false,
+});
+app.use(session)
+
 app.get('/*', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-setSocket(server);
+setSocket(server, session);
 
 server.listen(PORT, () => console.log('SERVER CONNECTED'));

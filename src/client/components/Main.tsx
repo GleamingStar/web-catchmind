@@ -23,11 +23,13 @@ const Main = () => {
   const setChatLog = useSetRecoilState(chatLogAtom);
   const setRoomIndex = useSetRecoilState(currentRoomIndexAtom);
   const setRoomList = useSetRecoilState(roomListAtom);
+  const setAccount = useSetRecoilState(accountAtom);
 
   useEffect(() => {
     socket.on('chat', (chat: TChat) => setChatLog((log) => [...log, chat]));
-    socket.on('room/update', (rooms) => setRoomList(rooms));
-    socket.on('room/join', (id) => setRoomIndex(id));
+    socket.on('room/update', setRoomList);
+    socket.on('room/join', setRoomIndex);
+    socket.on('login/success', setAccount);
 
     return () => {
       socket.offAny();
