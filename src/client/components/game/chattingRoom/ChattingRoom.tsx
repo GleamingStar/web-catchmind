@@ -4,6 +4,7 @@ import Sender from './Sender';
 
 const ChattingRoomWrapper = styled.div`
   position: absolute;
+  top: 0;
   right: 0;
 
   display: flex;

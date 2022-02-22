@@ -21,3 +21,7 @@ export const ROOM_ALERT_MESSAGE = {
   EMPTY: '방 이름을 제대로 입력해주세요',
   LENGTH: `${MAX_ROOM_NAME_LENGTH}자 이하의 이름을 입력해주세요`,
 };
+
+export const COLOR = ['black', 'red', 'yellow', 'green', 'cyan', 'blue', 'magenta'];
+
+export const CANVAS_SIZE = 492;
