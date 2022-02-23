@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { MouseEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { contextAtom } from 'client/atom/canvasAtom';
+import socket from 'client/config/socket';
 import { CANVAS_SIZE } from 'shared/constant';
 
 const BoardWrapper = styled.div`
@@ -26,16 +27,18 @@ const Board = () => {
     setCtx(context);
   }, []);
 
-  const draw = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
+  const mouseDownHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
     if (!ctx) return;
-    const { offsetX, offsetY } = nativeEvent;
-    if (!isDown) {
-      ctx.beginPath();
-      ctx.moveTo(offsetX, offsetY);
-    } else {
-      ctx.lineTo(offsetX, offsetY);
-      ctx.stroke();
-    }
+    setDown(true);
+    ctx.beginPath();
+    ctx.moveTo(nativeEvent.offsetX, nativeEvent.offsetY);
+  };
+
+  const draw = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
+    if (!ctx || !isDown) return;
+    ctx.lineTo(nativeEvent.offsetX, nativeEvent.offsetY);
+    ctx.stroke();
+    socket.emit('canvas/draw', canvasRef.current.toDataURL());
   };
 
   return (
@@ -44,7 +47,7 @@ const Board = () => {
         width={CANVAS_SIZE}
         height={CANVAS_SIZE}
         onMouseMove={draw}
-        onMouseDown={() => setDown(true)}
+        onMouseDown={mouseDownHandler}
         onMouseUp={() => setDown(false)}
         onMouseLeave={() => setDown(false)}
         ref={canvasRef}

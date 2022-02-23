@@ -37,8 +37,6 @@ const setRoomEvent = (io: Server, socket: Socket) => {
   });
 
   socket.on('room/join', (targetId: number) => {
-    if (session.roomId !== null) return;
-
     const { id, name, imgUrl } = session.user;
 
     session.roomId = targetId;
@@ -73,7 +71,7 @@ const setRoomEvent = (io: Server, socket: Socket) => {
   });
 
   socket.on('disconnecting', () => {
-    if (session.roomId === null || session.user === null) return;
+    if (session.roomId === null || !session.user) return;
 
     const { id, name } = session.user;
 

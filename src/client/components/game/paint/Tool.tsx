@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsArrowCounterclockwise, BsEraser, BsPalette, BsPencil } from 'react-icons/bs';
 import { colorAtom, contextAtom, toolAtom } from 'client/atom/canvasAtom';
+import socket from 'client/config/socket';
 import { CANVAS_SIZE, COLOR } from 'shared/constant';
 
 const ToolWrapper = styled.div`
@@ -53,11 +54,17 @@ const Tool = () => {
     ctx.lineWidth = 10;
     ctx.globalCompositeOperation = 'destination-out';
   };
+
+  const clickResetHandler = () => {
+    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
+    socket.emit('canvas/reset')
+  }
+
   return (
     <ToolWrapper>
       <BsPencil onClick={setPencil} />
       <BsEraser onClick={setEraser} />
-      <BsArrowCounterclockwise onClick={() => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)} />
+      <BsArrowCounterclockwise onClick={clickResetHandler} />
       <Palette />
     </ToolWrapper>
   );

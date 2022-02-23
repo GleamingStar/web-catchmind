@@ -1,9 +1,9 @@
 import { Server } from 'socket.io';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
-
 import { chat } from './chat';
 import setUserEvent from './user';
 import setRoomEvent from './room';
+import setCanvasEvent from './canvas';
 
 const setSocket = (server, session: RequestHandler) => {
   const io = new Server(server);
@@ -11,8 +11,7 @@ const setSocket = (server, session: RequestHandler) => {
   io.use(({ request }, next) => session(request as Request, {} as Response, next as NextFunction));
 
   io.on('connection', (socket) => {
-
-    socket.on('chat', (message : string) => {
+    socket.on('chat', (message: string) => {
       const { user, roomId } = socket.request.session;
       io.to(roomId.toString()).emit('chat', chat(user.name, user.imgUrl, message));
     });
@@ -21,6 +20,7 @@ const setSocket = (server, session: RequestHandler) => {
 
     setUserEvent(socket);
 
+    setCanvasEvent(socket);
   });
 
   return io;

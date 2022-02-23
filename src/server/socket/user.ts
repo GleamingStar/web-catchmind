@@ -24,7 +24,7 @@ const setUserEvent = (socket: Socket) => {
     socket.emit('login/success', user);
   });
 
-  socket.on('disconnect', () => (userList = userList.filter(({ id }) => id !== session.user.id)));
+  socket.on('disconnect', () => (userList = userList.filter(({ id }) => id !== session.user?.id)));
 };
 
 export default setUserEvent;
