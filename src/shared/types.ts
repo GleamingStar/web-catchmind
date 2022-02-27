@@ -26,5 +26,6 @@ export type TUser = {
 export type TRoom = {
   id: number;
   name: string;
+  status: 'WAITING' | 'PLAYING';
   users: Array<TUser>;
 };
