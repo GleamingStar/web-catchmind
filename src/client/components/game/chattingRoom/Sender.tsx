@@ -6,7 +6,7 @@ const SenderWrapper = styled.div`
   position: relative;
   width: 300px;
   height: 60px;
-  background-color: #222;
+  background-color: #f7ecde;
   display: flex;
   justify-content: space-evenly;
   align-items: center;
@@ -20,9 +20,7 @@ const Sender = () => {
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
 
   const sendMessage = () => {
-    if (inputValue.length === 0) {
-      return;
-    }
+    if (inputValue.length === 0) return;
     socket.emit('chat', inputValue);
     setInputValue('');
   };

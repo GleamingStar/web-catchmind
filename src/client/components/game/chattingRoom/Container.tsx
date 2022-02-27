@@ -7,8 +7,8 @@ const ContainerWrapper = styled.div`
   position: relative;
   padding: 10px;
   width: 300px;
-  height: 540px;
-  background-color: #111;
+  height: 460px;
+  background-color: #fbf8f1;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;

@@ -10,11 +10,11 @@ const ChatWrapper = styled.div`
   }
 `;
 const Colon = styled.div`
-  color: #fff;
+  color: #000;
   margin-right: 4px;
 `;
 const Message = styled.div<{ type: MessageType }>`
-  color: ${({ type }) => (type === MessageType.User ? '#fff' : '#888')};
+  color: ${({ type }) => (type === MessageType.User ? '#000' : '#888')};
 `;
 const UserWrapper = styled.div`
   display: flex;
@@ -31,7 +31,7 @@ const UserImg = styled.img`
 `;
 const UserName = styled.div`
   margin-right: 4px;
-  color: #fff;
+  color: #000;
 `;
 
 const Chat = ({ type, name, imgUrl, message }: TChat) => {

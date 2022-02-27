@@ -18,7 +18,7 @@ const RoomListWrapper = styled.div`
   overflow-y: scroll;
   ::-webkit-scrollbar {
     width: 10px;
-    background-color: #c3dbd9;
+    background-color: #ffeddb;
     border-radius: 10px;
   }
 `;

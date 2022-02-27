@@ -26,7 +26,7 @@ const PaletteWrapper = styled.div`
   width: 250px;
   height: 30px;
   border-radius: 10px;
-  background-color: #c3dbd9;
+  background-color: #e6ddc4;
 
   display: flex;
   justify-content: space-around;
@@ -56,9 +56,9 @@ const Tool = () => {
   };
 
   const clickResetHandler = () => {
-    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE)
-    socket.emit('canvas/reset')
-  }
+    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+    socket.emit('canvas/reset');
+  };
 
   return (
     <ToolWrapper>

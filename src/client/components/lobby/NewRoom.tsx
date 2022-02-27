@@ -23,7 +23,7 @@ const NewRoomTitle = styled.div`
 `;
 const NewRoomInput = styled.input`
   width: 145px;
-  background-color: #c3dbd9;
+  background-color: #ffeddb;
   border: none;
   border-radius: 5px;
 
