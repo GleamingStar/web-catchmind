@@ -2,16 +2,16 @@ import { Server, Socket } from 'socket.io';
 import { TRoom, TUser } from 'shared/types';
 import { enter, join, leave } from './chat';
 
-const getRoom = (roomId: number) => rooms[rooms.findIndex(({ id }) => id === roomId)];
+const getRoom = (targetId: number) => rooms[rooms.findIndex(({ id }) => id === targetId)];
 
-const getUserList = (roomId: number) => getRoom(roomId).users;
+const getUserList = (targetId: number) => getRoom(targetId).users;
 
-const deleteRoom = (roomId: number) => (rooms = rooms.filter(({ id }) => id !== roomId));
+const deleteRoom = (targetId: number) => (rooms = rooms.filter(({ id }) => id !== targetId));
 
-const joinUser = (roomId: number, user: TUser) => getRoom(roomId).users.push(user);
+const joinUser = (targetId: number, user: TUser) => getRoom(targetId).users.push(user);
 
-const leaveUser = (roomId: number, userId: number) =>
-  (getRoom(roomId).users = getRoom(roomId).users.filter(({ id }) => id !== userId));
+const leaveUser = (targetId: number, userId: number) =>
+  (getRoom(targetId).users = getRoom(targetId).users.filter(({ id }) => id !== userId));
 
 let rooms: Array<TRoom> = [];
 
@@ -28,12 +28,14 @@ const setRoomEvent = (io: Server, socket: Socket) => {
     session.roomId = roomId;
     socket.join(roomId.toString());
 
-    rooms.push({ id: roomId++, name: roomName, users: [session.user] });
+    rooms.push({ id: roomId, name: roomName, users: [session.user], status: 'WAITING' });
 
     io.emit('room/update', rooms);
 
     socket.emit('room/join', roomId);
     socket.emit('chat', enter(session.user.name));
+
+    roomId++;
   });
 
   socket.on('room/join', (targetId: number) => {
@@ -52,7 +54,7 @@ const setRoomEvent = (io: Server, socket: Socket) => {
   });
 
   socket.on('room/leave', () => {
-    if (session.roomId !== null) return;
+    if (session.roomId === null) return;
 
     const { id, name } = session.user;
 

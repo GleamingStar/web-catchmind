@@ -25,6 +25,10 @@ const Listener = () => {
       setRoomAlert(ROOM_ALERT_MESSAGE.NONE);
       setRoomIndex(roomId);
     });
+    socket.on('room/leave', () => {
+      setChatLog([]);
+      setRoomIndex(null);
+    });
     socket.on('login/success', (account: TUser) => {
       setLoginAlert(LOGIN_ALERT_MESSAGE.NONE);
       setAccount(account);
@@ -32,7 +36,7 @@ const Listener = () => {
     socket.on('login/fail/duplicate', () => setLoginAlert(LOGIN_ALERT_MESSAGE.DUPLICATED));
 
     return () => {
-      socket.offAny();
+      socket.off();
     };
   }, []);
 
