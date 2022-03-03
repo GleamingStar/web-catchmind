@@ -4,7 +4,7 @@ import { isUserListOnSelector } from 'client/atom/modalAtom';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import User from 'client/components/common/User';
 
-const UserListWrapper = styled.div<{ activated: boolean }>`
+const UserListWrapper = styled.div<{ isActivated: boolean }>`
   position: absolute;
 
   padding: 10px;
@@ -12,7 +12,7 @@ const UserListWrapper = styled.div<{ activated: boolean }>`
   max-height: 300px;
   top: 90px;
   right: 10px;
-  transform: ${({ activated }) => `translateX(${activated ? '0px' : '170px'})`};
+  transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '170px'})`};
 
   border: 3px solid #000;
   border-radius: 10px;
@@ -38,7 +38,7 @@ const UserList = () => {
   const isOn = useRecoilValue(isUserListOnSelector);
 
   return (
-    <UserListWrapper activated={isOn}>
+    <UserListWrapper isActivated={isOn}>
       {room?.users.map((user) => (
         <User key={user.id} {...user} />
       ))}
