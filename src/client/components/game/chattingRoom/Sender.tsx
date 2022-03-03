@@ -35,7 +35,7 @@ const Sender = () => {
         onChange={inputChangeHandler}
         placeholder="메세지 보내기"
       />
-      <SenderButton>전송</SenderButton>
+      <SenderButton onClick={sendMessage}>전송</SenderButton>
     </SenderWrapper>
   );
 };

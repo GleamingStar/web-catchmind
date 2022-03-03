@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsArrowCounterclockwise, BsEraser, BsPalette, BsPencil } from 'react-icons/bs';
+import { isPainterSelector } from 'client/atom/gameAtom';
 import { colorAtom, contextAtom, toolAtom } from 'client/atom/canvasAtom';
 import socket from 'client/config/socket';
 import { CANVAS_SIZE, COLOR } from 'shared/constant';
@@ -42,6 +43,7 @@ const Color = styled.div<{ color: string }>`
 const Tool = () => {
   const ctx = useRecoilValue(contextAtom);
   const setTool = useSetRecoilState(toolAtom);
+  const isPainter = useRecoilValue(isPainterSelector);
 
   const setPencil = () => {
     setTool('pencil');
@@ -56,6 +58,7 @@ const Tool = () => {
   };
 
   const clickResetHandler = () => {
+    if (!isPainter) return;
     ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
     socket.emit('canvas/reset');
   };

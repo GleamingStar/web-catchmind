@@ -54,7 +54,12 @@ const Login = () => {
 
   return (
     <LoginWrapper>
-      <LoginInput value={inputValue} onChange={inputChangeHandler} placeholder="닉네임을 입력해주세요" />
+      <LoginInput
+        value={inputValue}
+        onChange={inputChangeHandler}
+        onKeyPress={({ key }) => key === 'Enter' && login()}
+        placeholder="닉네임을 입력해주세요"
+      />
       <LoginButton onClick={login}>입장</LoginButton>
       <LoginAlert>{alert}</LoginAlert>
     </LoginWrapper>

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { roomAlertAtom } from 'client/atom/alertAtom';
 import socket from 'client/config/socket';
@@ -55,6 +55,12 @@ const NewRoom = () => {
   const [isActivated, setActivated] = useState(false);
   const [alert, setAlert] = useRecoilState(roomAlertAtom);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    isActivated && inputRef.current.focus();
+  }, [isActivated]);
+
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
 
   const isValid = () => {
@@ -76,7 +82,13 @@ const NewRoom = () => {
     <NewRoomWrapper>
       {isActivated ? (
         <>
-          <NewRoomInput placeholder="방 이름을 입력해주세요" value={inputValue} onChange={inputChangeHandler} />
+          <NewRoomInput
+            placeholder="방 이름을 입력해주세요"
+            ref={inputRef}
+            value={inputValue}
+            onChange={inputChangeHandler}
+            onKeyPress={({ key }) => key === 'Enter' && createRoom()}
+          />
           <NewRoomButton onClick={createRoom}>만들기</NewRoomButton>
         </>
       ) : (
