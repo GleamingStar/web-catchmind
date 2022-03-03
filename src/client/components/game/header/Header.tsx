@@ -3,8 +3,10 @@ import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsFillFileRuledFill, BsFillReplyFill, BsPersonCircle } from 'react-icons/bs';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import { toggleModalAtom } from 'client/atom/modalAtom';
+import { gameAtom } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import UserList from './UserList';
+import ScoreBoard from './ScoreBoard';
 
 const HeaderWrapper = styled.div`
   position: absolute;
@@ -42,6 +44,7 @@ const ScoreBoardButton = styled.div`
 
 const Header = () => {
   const room = useRecoilValue(currentRoomSelector);
+  const game = useRecoilValue(gameAtom);
   const toggleModal = useSetRecoilState(toggleModalAtom);
 
   return (
@@ -54,10 +57,11 @@ const Header = () => {
       <UserListButton onClick={() => toggleModal((status) => (status === 1 ? 0 : 1))}>
         <BsPersonCircle />
       </UserListButton>
-      <ScoreBoardButton>
+      <ScoreBoardButton onClick={() => game && toggleModal((status) => (status === 2 ? 0 : 2))}>
         <BsFillFileRuledFill />
       </ScoreBoardButton>
       <UserList />
+      {game && <ScoreBoard />}
     </HeaderWrapper>
   );
 };
