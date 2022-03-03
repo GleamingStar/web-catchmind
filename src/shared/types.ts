@@ -29,3 +29,15 @@ export type TRoom = {
   status: 'WAITING' | 'PLAYING';
   users: Array<TUser>;
 };
+
+export type TGame = {
+  id: number;
+  round: number;
+  set: number;
+  answer: string;
+  painter: TUser;
+  users: Array<TUser>;
+  waitingUsers: Array<TUser>;
+  usedAnswer: Array<string>;
+  score: Array<{ user: TUser; value: number }>;
+};

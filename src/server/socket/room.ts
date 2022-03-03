@@ -13,7 +13,7 @@ const joinUser = (targetId: number, user: TUser) => getRoom(targetId).users.push
 const leaveUser = (targetId: number, userId: number) =>
   (getRoom(targetId).users = getRoom(targetId).users.filter(({ id }) => id !== userId));
 
-let rooms: Array<TRoom> = [];
+export let rooms: Array<TRoom> = [];
 
 let roomId = 0;
 

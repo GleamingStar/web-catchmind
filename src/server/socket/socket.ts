@@ -2,6 +2,7 @@ import { Server } from 'socket.io';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { chat } from './chat';
 import setUserEvent from './user';
+import setGameEvent from './game';
 import setRoomEvent from './room';
 import setCanvasEvent from './canvas';
 
@@ -16,9 +17,11 @@ const setSocket = (server, session: RequestHandler) => {
       io.to(roomId.toString()).emit('chat', chat(user.name, user.imgUrl, message));
     });
 
-    setRoomEvent(io, socket);
-
     setUserEvent(socket);
+
+    setGameEvent(io, socket);
+
+    setRoomEvent(io, socket);
 
     setCanvasEvent(socket);
   });

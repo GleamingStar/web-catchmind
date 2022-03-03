@@ -9,6 +9,10 @@ export const MAX_USER_NAME_LENGTH = 10;
 
 export const MAX_ROOM_NAME_LENGTH = 8;
 
+export const MAX_GAME_ROUND = 5;
+
+export const MAX_SET_TIMER = 180;
+
 export const LOGIN_ALERT_MESSAGE = {
   NONE: '',
   EMPTY: '닉네임을 제대로 입력해주세요',
