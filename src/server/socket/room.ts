@@ -1,6 +1,6 @@
 import { Server, Socket } from 'socket.io';
 import { TRoom, TUser } from 'shared/types';
-import { enter, join, leave } from './chat';
+import { enter, leave } from './chat';
 
 const getRoom = (targetId: number) => rooms[rooms.findIndex(({ id }) => id === targetId)];
 
@@ -33,7 +33,7 @@ const setRoomEvent = (io: Server, socket: Socket) => {
     io.emit('room/update', rooms);
 
     socket.emit('room/join', roomId);
-    socket.emit('chat', enter(session.user.name));
+    enter(socket, session.roomId, session.user.name);
 
     roomId++;
   });
@@ -49,8 +49,7 @@ const setRoomEvent = (io: Server, socket: Socket) => {
     io.emit('room/update', rooms);
     socket.emit('room/join', targetId);
 
-    socket.emit('chat', enter(name));
-    socket.broadcast.to(targetId.toString()).emit('chat', join(name));
+    enter(socket, session.roomId, name);
   });
 
   socket.on('room/leave', () => {
@@ -60,7 +59,7 @@ const setRoomEvent = (io: Server, socket: Socket) => {
 
     socket.leave(session.roomId.toString());
 
-    socket.broadcast.to(session.roomId.toString()).emit('chat', leave(name));
+    leave(socket, session.roomId, name);
 
     leaveUser(session.roomId, id);
 
@@ -77,7 +76,7 @@ const setRoomEvent = (io: Server, socket: Socket) => {
 
     const { id, name } = session.user;
 
-    socket.broadcast.to(session.roomId.toString()).emit('chat', leave(name));
+    leave(socket, roomId, name);
 
     leaveUser(session.roomId, id);
 

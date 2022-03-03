@@ -3,6 +3,7 @@ import { TGame, TUser } from 'shared/types';
 import { MAX_GAME_ROUND } from 'shared/constant';
 import mockupData from 'shared/answers.json';
 import { rooms } from './room';
+import { answer, end, start, stop, timeout } from './chat';
 
 let games: Array<TGame> = [];
 
@@ -67,6 +68,7 @@ const setGameEvent = (io: Server, socket: Socket) => {
     const game = getGame(gameId);
     game.usedAnswer.push(game.answer);
     io.to(gameId.toString()).emit('game/update', game);
+    game.answer = null;
     await delay(5000);
     startSet(gameId);
   };
@@ -90,6 +92,10 @@ const setGameEvent = (io: Server, socket: Socket) => {
   const endGame = (gameId: number) => {
     io.to(gameId.toString()).emit('game/end');
     rooms.filter(({ id }) => id === gameId)[0].status = 'WAITING';
+
+    if (getGame(gameId).users.length < 2) stop(io, gameId);
+    else end(io, gameId);
+
     io.emit('room/update', rooms);
     games = games.filter(({ id }) => id !== gameId);
   };
@@ -101,6 +107,8 @@ const setGameEvent = (io: Server, socket: Socket) => {
     io.emit('room/update', rooms);
 
     games.push(defaultGame(gameId, rooms.filter(({ id }) => id === gameId)[0].users));
+
+    start(io, gameId);
 
     startRound(gameId);
   });
@@ -114,14 +122,18 @@ const setGameEvent = (io: Server, socket: Socket) => {
     if (game.answer !== message) return;
     setScore(roomId, getGame(roomId).painter.id, user.id);
 
+    answer(io, roomId, user.name);
+
     io.to(roomId.toString()).emit('game/answer', game.users.filter(({ id }) => id === user.id)[0].name);
     endSet(roomId);
   });
 
   socket.on('game/timeout', () => {
     const { roomId, user } = socket.request.session;
-    if (roomId === null || getGame(roomId)?.painter.id !== user?.id) return;
+    const game = getGame(roomId);
+    if (roomId === null || game?.painter.id !== user?.id) return;
 
+    timeout(io, roomId, game.answer);
     io.to(roomId.toString()).emit('game/timeout');
     endSet(roomId);
   });

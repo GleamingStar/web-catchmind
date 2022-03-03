@@ -14,7 +14,7 @@ const setSocket = (server, session: RequestHandler) => {
   io.on('connection', (socket) => {
     socket.on('chat', (message: string) => {
       const { user, roomId } = socket.request.session;
-      io.to(roomId.toString()).emit('chat', chat(user.name, user.imgUrl, message));
+      chat(io, roomId, user.name, user.imgUrl, message);
     });
 
     setUserEvent(socket);
