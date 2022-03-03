@@ -12,7 +12,8 @@ const MainWrapper = styled.div`
   width: 800px;
   height: 600px;
 
-  background-color: #DFD3C3;
+  background-color: #dfd3c3;
+  overflow: hidden;
 `;
 
 const Main = () => {
