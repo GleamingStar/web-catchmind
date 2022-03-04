@@ -1,10 +1,12 @@
 import styled from 'styled-components';
+import { lazy, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
-import Game from './game/Game';
-import Lobby from './lobby/Lobby';
 import Login from './login/Login';
+const Listener = lazy(() => import('client/config/Listener'));
+const Lobby = lazy(() => import('./lobby/Lobby'));
+const Game = lazy(() => import('./game/Game'));
 
 const MainWrapper = styled.div`
   position: relative;
@@ -19,7 +21,14 @@ const MainWrapper = styled.div`
 const Main = () => {
   const isLogined = useRecoilValue(accountAtom) !== null;
   const isInRoom = useRecoilValue(currentRoomIndexAtom) !== null;
-  return <MainWrapper>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Login />}</MainWrapper>;
+  return (
+    <MainWrapper>
+      <Suspense fallback={<></>}>
+        <Listener />
+        {isLogined ? isInRoom ? <Game /> : <Lobby /> : <Login />}
+      </Suspense>
+    </MainWrapper>
+  );
 };
 
 export default Main;

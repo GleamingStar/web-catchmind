@@ -1,13 +1,14 @@
+import { lazy, Suspense } from 'react';
 import { RecoilRoot } from 'recoil';
-import Main from './components/Main';
 import GlobalStyle from './config/GlobalStyle';
-import Listener from './config/Listener';
+const Main = lazy(() => import('./components/Main'));
 
 const App = () => (
   <RecoilRoot>
     <GlobalStyle />
-    <Main />
-    <Listener />
+    <Suspense fallback={<></>}>
+      <Main />
+    </Suspense>
   </RecoilRoot>
 );
 
