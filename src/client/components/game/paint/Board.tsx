@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import { MouseEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
+import { accountAtom } from 'client/atom/accountAtom';
 import { contextAtom } from 'client/atom/canvasAtom';
+import { currentRoomSelector } from 'client/atom/roomAtom';
 import { gameAtom, isPainterSelector } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import { CANVAS_SIZE } from 'shared/constant';
@@ -16,6 +18,8 @@ const BoardWrapper = styled.div`
 
 const Board = () => {
   const game = useRecoilValue(gameAtom);
+  const currentRoom = useRecoilValue(currentRoomSelector);
+  const account = useRecoilValue(accountAtom);
   const isPainter = useRecoilValue(isPainterSelector);
   const canvasRef = useRef(null);
 
@@ -29,6 +33,16 @@ const Board = () => {
 
     setCtx(context);
   }, []);
+
+  useEffect(() => {
+    socket.on(
+      'canvas/update',
+      () => account.id === currentRoom.users[0].id && socket.emit('canvas/draw', canvasRef.current.toDataURL())
+    );
+    return () => {
+      socket.off('canvas/update');
+    };
+  }, [currentRoom]);
 
   const mouseDownHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
     if (!ctx) return;
