@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MouseEvent, MouseEventHandler, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { contextAtom } from 'client/atom/canvasAtom';
-import { isPainterSelector } from 'client/atom/gameAtom';
+import { gameAtom, isPainterSelector } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import { CANVAS_SIZE } from 'shared/constant';
 
@@ -15,6 +15,7 @@ const BoardWrapper = styled.div`
 `;
 
 const Board = () => {
+  const game = useRecoilValue(gameAtom);
   const isPainter = useRecoilValue(isPainterSelector);
   const canvasRef = useRef(null);
 
@@ -37,7 +38,7 @@ const Board = () => {
   };
 
   const draw = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
-    if (!ctx || !isDown || !isPainter) return;
+    if (!ctx || !isDown || !isPainter || game?.status === 'WAITING') return;
     ctx.lineTo(nativeEvent.offsetX, nativeEvent.offsetY);
     ctx.stroke();
     socket.emit('canvas/draw', canvasRef.current.toDataURL());

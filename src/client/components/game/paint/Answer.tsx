@@ -24,7 +24,7 @@ const Answer = () => {
   const answer = useRecoilValue(answerSelector);
   const account = useRecoilValue(accountAtom);
   const isPainter = useRecoilValue(isPainterSelector);
-  const isPlaying = game?.users.some(({ id }) => id === account.id);
+  const isPlaying = game?.users.some(({ id }) => id === account.id) && game.status === 'PLAYING';
 
   return (
     <AnswerWrapper isActivated={game !== null}>

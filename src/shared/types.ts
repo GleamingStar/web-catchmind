@@ -23,10 +23,12 @@ export type TUser = {
   imgUrl: string;
 };
 
+type TStatus = 'WAITING' | 'PLAYING';
+
 export type TRoom = {
   id: number;
   name: string;
-  status: 'WAITING' | 'PLAYING';
+  status: TStatus;
   users: Array<TUser>;
 };
 
@@ -34,6 +36,7 @@ export type TGame = {
   id: number;
   round: number;
   set: number;
+  status: TStatus;
   answer: string;
   painter: TUser;
   users: Array<TUser>;

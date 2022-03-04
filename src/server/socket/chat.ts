@@ -31,7 +31,7 @@ export const leave = (socket: Socket, roomId: number, name: string) =>
 export const start = (io: Server, roomId: number) =>
   io.to(roomId.toString()).emit('chat', makeSystemMessage('게임이 시작되었습니다'));
 
-export const answer = (io: Server, roomId: number, name: string) =>
+export const win = (io: Server, roomId: number, name: string) =>
   io.to(roomId.toString()).emit('chat', makeSystemMessage(`${name}님이 정답을 맞혔습니다`));
 
 export const timeout = (io: Server, roomId: number, answer: string) => {
