@@ -12,7 +12,9 @@ const SenderWrapper = styled.div`
   align-items: center;
 `;
 const SenderInput = styled.input``;
-const SenderButton = styled.button``;
+const SenderButton = styled.button`
+  cursor: pointer;
+`;
 
 const Sender = () => {
   const [inputValue, setInputValue] = useState<string>('');

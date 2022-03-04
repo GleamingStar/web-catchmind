@@ -30,16 +30,22 @@ const ExitButton = styled.div`
   position: absolute;
   top: 10px;
   left: 10px;
+
+  cursor: pointer;
 `;
 const UserListButton = styled.div`
   position: absolute;
   top: 10px;
   right: 10px;
+
+  cursor: pointer;
 `;
 const ScoreBoardButton = styled.div`
   position: absolute;
   bottom: 10px;
   right: 10px;
+
+  cursor: pointer;
 `;
 
 const Header = () => {

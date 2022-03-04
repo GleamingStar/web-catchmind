@@ -38,6 +38,8 @@ const Color = styled.div<{ color: string }>`
   height: 16px;
   background-color: ${({ color }) => color};
   border-radius: 50%;
+
+  cursor: pointer;
 `;
 
 const Tool = () => {
@@ -65,9 +67,9 @@ const Tool = () => {
 
   return (
     <ToolWrapper>
-      <BsPencil onClick={setPencil} />
-      <BsEraser onClick={setEraser} />
-      <BsArrowCounterclockwise onClick={clickResetHandler} />
+      <BsPencil cursor="pointer" onClick={setPencil} />
+      <BsEraser cursor="pointer" onClick={setEraser} />
+      <BsArrowCounterclockwise cursor="pointer" onClick={clickResetHandler} />
       <Palette />
     </ToolWrapper>
   );
