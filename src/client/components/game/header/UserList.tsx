@@ -14,10 +14,11 @@ const UserListWrapper = styled.div<{ isActivated: boolean }>`
   right: 10px;
   transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '170px'})`};
 
-  border: 3px solid #000;
+  border: 3px solid #cdb699;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(2px);
+  
+  background-color: #fbf8f134;
+  backdrop-filter: blur(3px);
 
   overflow-y: scroll;
 
