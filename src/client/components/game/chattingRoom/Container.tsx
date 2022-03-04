@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import { chatLogAtom } from 'client/atom/chatAtom';
 import Chat from './Chat';
@@ -18,11 +19,22 @@ const ContainerWrapper = styled.div`
   }
 `;
 
+const AUTO_SCROLL_HEIGHT = 225;
+
 const Container = () => {
   const chatLog = useRecoilValue(chatLogAtom);
 
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+
+    if (scrollHeight - scrollTop - AUTO_SCROLL_HEIGHT <= clientHeight)
+      containerRef.current.scrollTo({ top: scrollHeight, behavior: 'smooth' });
+  }, [chatLog]);
+
   return (
-    <ContainerWrapper>
+    <ContainerWrapper ref={containerRef}>
       {chatLog.map((chat) => (
         <Chat key={chat.id} {...chat} />
       ))}
