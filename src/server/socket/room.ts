@@ -65,8 +65,8 @@ const setRoomEvent = (io: Server, socket: Socket) => {
 
     if (getUserList(session.roomId).length === 0) deleteRoom(session.roomId);
 
-    io.emit('room/update', rooms);
     socket.emit('room/leave');
+    io.emit('room/update', rooms);
 
     session.roomId = null;
   });

@@ -8,14 +8,16 @@ const RoomListWrapper = styled.div`
   position: absolute;
   top: 20px;
   right: 20px;
-
   padding: 20px;
-  height: 500px;
+  height: 560px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
   overflow-y: scroll;
+
   ::-webkit-scrollbar {
     width: 10px;
     background-color: #ffeddb;

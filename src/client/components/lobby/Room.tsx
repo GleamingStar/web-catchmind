@@ -1,25 +1,63 @@
 import styled from 'styled-components';
 import socket from 'client/config/socket';
+import { BsFillPlayCircleFill, BsHourglassSplit } from 'react-icons/bs';
+import { MAX_USER_PER_ROOM } from 'shared/constant';
+import { TRoom } from 'shared/types';
 
 const RoomWrapper = styled.div`
   position: relative;
-
   min-height: 60px;
   width: 280px;
   margin-top: 20px;
 
-  color: #bb6464;
-
+  background-color: #dfd3c3;
+  color: #596e79;
   border: solid 1px #cdb699;
   border-radius: 10px;
 
   display: flex;
   justify-content: center;
   align-items: center;
+
+  &:hover {
+    filter: brightness(110%);
+  }
+
+  transition: filter 0.2s;
+
+  cursor: pointer;
+`;
+const Id = styled.div`
+  position: absolute;
+  top: 5px;
+  left: 15px;
+`;
+const Status = styled.div`
+  position: absolute;
+  bottom: 5px;
+  left: 15px;
+`;
+const People = styled.div`
+  position: absolute;
+  top: 5px;
+  right: 20px;
+`;
+const Name = styled.div`
+  position: absolute;
+  bottom: 8px;
+  right: 15px;
+
+  font-size: 20px;
+  font-weight: 600;
 `;
 
-const Room = ({ id, name }: { id: number; name: string }) => (
-  <RoomWrapper onClick={() => socket.emit('room/join', id)}>{name}</RoomWrapper>
+const Room = ({ id, name, status, users }: TRoom) => (
+  <RoomWrapper onClick={() => socket.emit('room/join', id)}>
+    <Id>{`#${id}`}</Id>
+    <Status>{status === 'WAITING' ? <BsHourglassSplit size={18} /> : <BsFillPlayCircleFill size={17} />}</Status>
+    <People>{`${users.length} / ${MAX_USER_PER_ROOM}`}</People>
+    <Name>{name}</Name>
+  </RoomWrapper>
 );
 
 export default Room;

@@ -9,6 +9,8 @@ export const MAX_USER_NAME_LENGTH = 10;
 
 export const MAX_ROOM_NAME_LENGTH = 8;
 
+export const MAX_USER_PER_ROOM = 8;
+
 export const MAX_GAME_ROUND = 5;
 
 export const MAX_SET_TIMER = 180;
