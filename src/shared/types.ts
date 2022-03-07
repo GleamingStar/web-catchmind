@@ -1,3 +1,5 @@
+import { COLOR } from './constant';
+
 declare module 'node:http' {
   interface IncomingMessage {
     session: { user: TUser; roomId: number };
@@ -43,4 +45,12 @@ export type TGame = {
   waitingUsers: Array<TUser>;
   usedAnswer: Array<string>;
   score: Array<{ user: TUser; value: number }>;
+};
+
+export type TColor = typeof COLOR[number];
+
+export type TCanvas = {
+  tool: 'pencil' | 'eraser';
+  color: TColor;
+  location: { x0: number; y0: number; x1: number; y1: number };
 };

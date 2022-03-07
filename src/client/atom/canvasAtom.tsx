@@ -1,4 +1,5 @@
 import { atom, selector } from 'recoil';
+import { TColor } from 'shared/types';
 
 export const contextAtom = atom<CanvasRenderingContext2D>({
   key: 'canvas',
@@ -10,7 +11,7 @@ export const toolAtom = atom<'pencil' | 'eraser'>({
   default: 'pencil',
 });
 
-export const colorAtom = atom({
+export const colorAtom = atom<TColor>({
   key: 'color',
   default: 'black',
 });

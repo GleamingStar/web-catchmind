@@ -28,6 +28,6 @@ export const ROOM_ALERT_MESSAGE = {
   LENGTH: `${MAX_ROOM_NAME_LENGTH}자 이하의 이름을 입력해주세요`,
 };
 
-export const COLOR = ['black', 'red', 'yellow', 'green', 'cyan', 'blue', 'magenta'];
+export const COLOR = ['black', 'red', 'yellow', 'green', 'cyan', 'blue', 'magenta'] as const;
 
 export const CANVAS_SIZE = 492;

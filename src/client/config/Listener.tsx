@@ -7,7 +7,7 @@ import { loginAlertAtom, roomAlertAtom } from 'client/atom/alertAtom';
 import { contextAtom } from 'client/atom/canvasAtom';
 import { gameAtom, timerAtom } from 'client/atom/gameAtom';
 import { CANVAS_SIZE, LOGIN_ALERT_MESSAGE, ROOM_ALERT_MESSAGE, MAX_SET_TIMER } from 'shared/constant';
-import { TChat, TGame, TUser } from 'shared/types';
+import { TCanvas, TChat, TGame, TUser } from 'shared/types';
 import socket from './socket';
 
 const Listener = () => {
@@ -53,7 +53,7 @@ const Listener = () => {
       const timerCallback = () => {
         setTimer((time) => {
           if (time < 1) {
-            socket.emit('game/timeout')
+            socket.emit('game/timeout');
             return time;
           } else {
             timer = setTimeout(timerCallback, 1000);
@@ -83,13 +83,19 @@ const Listener = () => {
       socket.off();
     };
   }, []);
-  
+
   useEffect(() => {
     if (!canvasContext) return;
-    socket.on('canvas/draw', (canvas) => {
-      const img = new Image();
-      img.onload = () => canvasContext.drawImage(img, 0, 0);
-      img.src = canvas;
+    socket.on('canvas/draw', ({ tool, color, location }: TCanvas) => {
+      const { x0, y0, x1, y1 } = location;
+      canvasContext.beginPath();
+      canvasContext.lineWidth = tool === 'pencil' ? 2 : 10;
+      canvasContext.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
+      canvasContext.moveTo(x0, y0);
+      canvasContext.lineTo(x1, y1);
+      canvasContext.strokeStyle = color;
+      canvasContext.stroke();
+      canvasContext.closePath();
     });
 
     const resetListener = () => canvasContext.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
