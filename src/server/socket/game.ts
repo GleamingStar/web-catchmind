@@ -3,7 +3,7 @@ import { TGame, TUser } from 'shared/types';
 import { MAX_GAME_ROUND } from 'shared/constant';
 import mockupData from 'shared/answers.json';
 import { rooms } from './room';
-import { end, start, stop, timeout, win } from './chat';
+import { end, painterOut, start, stop, timeout, win } from './chat';
 
 let games: Array<TGame> = [];
 
@@ -86,7 +86,7 @@ const setGameEvent = (io: Server, socket: Socket) => {
 
     if (game.users.length < 2) return endGame(roomId);
     if (game.painter.id === user.id && game.status === 'PLAYING') {
-      io.to(roomId.toString()).emit('game/painterDisconnected');
+      painterOut(io, roomId, game.answer);
       endSet(roomId);
     }
   };
