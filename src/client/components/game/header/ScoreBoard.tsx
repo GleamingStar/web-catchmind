@@ -60,11 +60,15 @@ const ScoreBoard = () => {
   const score = useRecoilValue(scoreSelector);
   const isOn = useRecoilValue(isScoreBoardOnSelector);
 
+  if (!game) return <></>;
+
+  const { round, set, users } = game;
+
   return (
     <ScoreBoardWrapper isActivated={isOn}>
       <Progress>
-        <Round>{`ROUND ${game.round} / ${MAX_GAME_ROUND}`}</Round>
-        <Set>{`SET ${game.set} / ${game.users.length}`}</Set>
+        <Round>{`ROUND ${round} / ${MAX_GAME_ROUND}`}</Round>
+        <Set>{`SET ${set} / ${users.length}`}</Set>
       </Progress>
       <Line />
       {score.map(({ user, value }) => (

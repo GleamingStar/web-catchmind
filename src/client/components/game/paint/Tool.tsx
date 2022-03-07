@@ -21,7 +21,19 @@ const ToolWrapper = styled.div`
 
   overflow: hidden;
 `;
+const IconWrapper = styled.div`
+  color: #493323;
+  display: flex;
+  align-items: center;
 
+  &:hover {
+    filter: brightness(250%);
+  }
+
+  transition: filter 0.25s;
+
+  cursor: pointer;
+`;
 const PaletteWrapper = styled.div`
   position: relative;
   width: 250px;
@@ -38,6 +50,12 @@ const Color = styled.div<{ color: string }>`
   height: 16px;
   background-color: ${({ color }) => color};
   border-radius: 50%;
+
+  &:hover {
+    filter: opacity(40%);
+  }
+
+  transition: filter 0.25s;
 
   cursor: pointer;
 `;
@@ -67,9 +85,15 @@ const Tool = () => {
 
   return (
     <ToolWrapper>
-      <BsPencil cursor="pointer" onClick={setPencil} />
-      <BsEraser cursor="pointer" onClick={setEraser} />
-      <BsArrowCounterclockwise cursor="pointer" onClick={clickResetHandler} />
+      <IconWrapper onClick={setPencil}>
+        <BsPencil />
+      </IconWrapper>
+      <IconWrapper onClick={setEraser}>
+        <BsEraser />
+      </IconWrapper>
+      <IconWrapper onClick={clickResetHandler}>
+        <BsArrowCounterclockwise />
+      </IconWrapper>
       <Palette />
     </ToolWrapper>
   );

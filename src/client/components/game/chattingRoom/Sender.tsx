@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
+import { BsCursor } from 'react-icons/bs';
 import socket from 'client/config/socket';
 
 const SenderWrapper = styled.div`
@@ -8,11 +9,28 @@ const SenderWrapper = styled.div`
   height: 60px;
   background-color: #f7ecde;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: center;
   align-items: center;
 `;
-const SenderInput = styled.input``;
-const SenderButton = styled.button`
+const SenderInput = styled.input`
+  padding: 9px;
+  width: 280px;
+  height: 40px;
+  border: 1px solid #e9dac1;
+  border-radius: 10px;
+`;
+const SenderButton = styled.div`
+  position: absolute;
+  right: 20px;
+
+  color: #493323;
+
+  &:hover {
+    filter: brightness(250%);
+  }
+
+  transition: filter 0.25s;
+
   cursor: pointer;
 `;
 
@@ -37,7 +55,9 @@ const Sender = () => {
         onChange={inputChangeHandler}
         placeholder="메세지 보내기"
       />
-      <SenderButton onClick={sendMessage}>전송</SenderButton>
+      <SenderButton onClick={sendMessage}>
+        <BsCursor />
+      </SenderButton>
     </SenderWrapper>
   );
 };
