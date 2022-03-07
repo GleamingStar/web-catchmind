@@ -16,6 +16,8 @@ const MainWrapper = styled.div`
 
   background-color: #dfd3c3;
   overflow: hidden;
+
+  user-select:none ;
 `;
 
 const Main = () => {

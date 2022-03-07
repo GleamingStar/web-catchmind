@@ -8,6 +8,7 @@ const ChatWrapper = styled.div`
   & + & {
     margin-top: 5px;
   }
+  user-select: text;
 `;
 const Colon = styled.div`
   color: #000;
@@ -20,7 +21,6 @@ const Message = styled.div<{ type: MessageType }>`
 const Chat = ({ type, name, imgUrl, message }: TChat) => {
   return (
     <ChatWrapper>
-      {' '}
       {type === MessageType.User && (
         <>
           <User name={name} imgUrl={imgUrl} />
@@ -31,6 +31,5 @@ const Chat = ({ type, name, imgUrl, message }: TChat) => {
     </ChatWrapper>
   );
 };
-
 
 export default Chat;
