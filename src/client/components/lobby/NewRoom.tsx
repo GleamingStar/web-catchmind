@@ -104,6 +104,8 @@ const NewRoom = () => {
         onChange={inputChangeHandler}
         isActivated={isActivated}
         onKeyPress={({ key }) => key === 'Enter' && createRoom()}
+        spellCheck={false}
+        maxLength={MAX_ROOM_NAME_LENGTH}
       />
       <NewRoomButton isActivated={isActivated} onClick={() => isActivated && createRoom()}>
         <BsFolderPlus size={22} />

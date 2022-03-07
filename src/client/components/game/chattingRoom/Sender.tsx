@@ -54,6 +54,8 @@ const Sender = () => {
         onKeyPress={inputKeyPressHandler}
         onChange={inputChangeHandler}
         placeholder="메세지 보내기"
+        autoFocus={true}
+        spellCheck={false}
       />
       <SenderButton onClick={sendMessage}>
         <BsCursor />

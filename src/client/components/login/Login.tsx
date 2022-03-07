@@ -59,6 +59,8 @@ const Login = () => {
         onChange={inputChangeHandler}
         onKeyPress={({ key }) => key === 'Enter' && login()}
         placeholder="닉네임을 입력해주세요"
+        spellCheck={false}
+        maxLength={MAX_USER_NAME_LENGTH}
       />
       <LoginButton onClick={login}>입장</LoginButton>
       <LoginAlert>{alert}</LoginAlert>
