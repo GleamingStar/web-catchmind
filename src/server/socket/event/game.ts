@@ -16,12 +16,6 @@ const setGameEvent = (socket: Socket, gameManager: GameManager) => {
     gameManager.answer(roomId, user);
   });
 
-  socket.on('game/timeout', () => {
-    const { roomId, user } = socket.request.session;
-    const { status, painter } = gameManager.getGame(roomId);
-    roomId !== null && status === 'PLAYING' && painter.id === user.id && gameManager.timeout(roomId);
-  });
-
   socket.on('room/join', (targetId: number) => {
     const game = gameManager.getGame(targetId);
     game && socket.emit('game/update', game);

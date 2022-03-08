@@ -44,40 +44,17 @@ const Listener = () => {
 
     socket.on('login/fail/duplicate', () => setLoginAlert(LOGIN_ALERT_MESSAGE.DUPLICATED));
 
-    let timer;
 
     socket.on('game/set/start', (game: TGame) => {
       setGame(game);
       setTimer(MAX_SET_TIMER);
-
-      const timerCallback = () => {
-        setTimer((time) => {
-          if (time < 1) {
-            socket.emit('game/timeout');
-            return time;
-          } else {
-            timer = setTimeout(timerCallback, 1000);
-            return time - 1;
-          }
-        });
-      };
-
-      clearTimeout(timer);
-      timer = setTimeout(timerCallback, 1000);
     });
 
-    socket.on('game/update', (game: TGame) => {
-      setGame(game);
-      clearTimeout(timer);
-    });
+    socket.on('game/timer', setTimer);
 
-    socket.on('game/end', () => {
-      setGame(null);
-      clearTimeout(timer);
-    });
+    socket.on('game/update', setGame);
 
-    socket.on('game/answer', () => clearTimeout(timer));
-    socket.on('game/timeout', () => clearTimeout(timer));
+    socket.on('game/end', () => setGame(null));
 
     return () => {
       socket.off();

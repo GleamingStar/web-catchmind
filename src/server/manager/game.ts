@@ -11,11 +11,13 @@ class GameManager {
   games: Array<TGame>;
   io: Server;
   room: roomManager;
+  timer: { [key in number]: ReturnType<typeof setTimeout> };
 
   constructor(io: Server, roomManager: roomManager) {
     this.games = [];
     this.io = io;
     this.room = roomManager;
+    this.timer = {};
   }
 
   getGame(targetId: number) {
@@ -62,7 +64,14 @@ class GameManager {
     game.status = 'PLAYING';
     game.painter = game.waitingUsers.pop();
     game.answer = this.setAnswer(game.usedAnswer);
+    this.setTimer(id, 180);
     this.io.to(id.toString()).emit('game/set/start', game);
+  }
+
+  setTimer(targetId: number, time: number) {
+    this.io.to(targetId.toString()).emit('game/timer', time);
+    if (time === 0) this.timeout(targetId);
+    else this.timer[targetId] = setTimeout(() => this.setTimer(targetId, time - 1), 1000);
   }
 
   answer(targetId: number, user: TUser) {
@@ -83,6 +92,7 @@ class GameManager {
   async endSet(targetId: number) {
     const game = this.getGame(targetId);
     if (game.status === 'WAITING') return;
+    clearTimeout(this.timer[targetId]);
     game.status = 'WAITING';
     game.usedAnswer.push(game.answer);
     this.io.to(targetId.toString()).emit('game/update', game);
@@ -106,6 +116,8 @@ class GameManager {
   }
 
   endGame(targetId: number, type: 'over' | 'stop') {
+    clearTimeout(this.timer[targetId]);
+    
     this.io.to(targetId.toString()).emit('game/end');
     type === 'over' ? chat.end(this.io, targetId) : chat.stop(this.io, targetId);
 
