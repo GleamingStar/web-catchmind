@@ -9,11 +9,11 @@ const ScoreBoardWrapper = styled.div<{ isActivated: boolean }>`
   position: absolute;
 
   padding: 10px;
-  width: 200px;
+  width: 250px;
   max-height: 300px;
   top: 90px;
   right: 10px;
-  transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '210px'})`};
+  transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '260px'})`};
 
   border: 3px solid #cdb699;
   border-radius: 10px;
