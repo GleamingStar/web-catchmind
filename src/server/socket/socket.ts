@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import { NextFunction, Request, RequestHandler, Response } from 'express';
+import { createServer } from 'http';
 import RoomManager from 'server/manager/room';
 import GameManager from 'server/manager/game';
 import setUserEvent from './event/user';
@@ -8,7 +9,7 @@ import setRoomEvent from './event/room';
 import setCanvasEvent from './event/canvas';
 import chat from './chat';
 
-const setSocket = (server, session: RequestHandler) => {
+const setSocket = (server: ReturnType<typeof createServer>, session: RequestHandler) => {
   const io = new Server(server);
 
   io.use(({ request }, next) => session(request as Request, {} as Response, next as NextFunction));

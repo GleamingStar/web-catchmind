@@ -92,7 +92,7 @@ const Board = () => {
     ctx.lineWidth = tool === 'pencil' ? 2 : 10;
     ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
     ctx.moveTo(location.x0, location.y0);
-    ctx.lineTo(nativeEvent.offsetX, nativeEvent.offsetY);
+    ctx.lineTo(offsetX, offsetY);
     ctx.strokeStyle = color;
     ctx.stroke();
     socket.emit('canvas/draw', { tool, color, location: { ...location, x1: offsetX, y1: offsetY } });
@@ -105,7 +105,7 @@ const Board = () => {
     setDown(false);
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
-    ctx.lineTo(nativeEvent.offsetX, nativeEvent.offsetY);
+    ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
     socket.emit('canvas/draw', { tool, color, location: { ...location, x1: offsetX, y1: offsetY } });
   };
