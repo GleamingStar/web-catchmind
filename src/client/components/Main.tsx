@@ -3,7 +3,7 @@ import { lazy, Suspense } from 'react';
 import { useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
-import Login from './login/Login';
+import Entrance from './entrance/Entrance';
 const Listener = lazy(() => import('client/config/Listener'));
 const Lobby = lazy(() => import('./lobby/Lobby'));
 const Game = lazy(() => import('./game/Game'));
@@ -17,7 +17,7 @@ const MainWrapper = styled.div`
   background-color: #dfd3c3;
   overflow: hidden;
 
-  user-select:none ;
+  user-select: none;
 `;
 
 const Main = () => {
@@ -27,7 +27,7 @@ const Main = () => {
     <MainWrapper>
       <Suspense fallback={<></>}>
         <Listener />
-        {isLogined ? isInRoom ? <Game /> : <Lobby /> : <Login />}
+        {isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}
       </Suspense>
     </MainWrapper>
   );
