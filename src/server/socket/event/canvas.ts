@@ -1,5 +1,5 @@
-import { TCanvas } from 'shared/types';
 import { Socket } from 'socket.io';
+import { TCanvas } from 'shared/types';
 
 const setCanvasEvent = (socket: Socket) => {
   socket.on('canvas/draw', (canvas: TCanvas) => {
