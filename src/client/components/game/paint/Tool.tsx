@@ -101,6 +101,7 @@ const Tool = () => {
 
 const Palette = () => {
   const ctx = useRecoilValue(contextAtom);
+  const setTool = useSetRecoilState(toolAtom);
   const [currentColor, setColor] = useRecoilState(colorAtom);
 
   return (
@@ -111,7 +112,10 @@ const Palette = () => {
           key={color}
           color={color}
           onClick={() => {
+            setTool('pencil');
             setColor(color);
+            ctx.lineWidth = 2;
+            ctx.globalCompositeOperation = 'source-over';
             ctx.strokeStyle = color;
           }}
         />
