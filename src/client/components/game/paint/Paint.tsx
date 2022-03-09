@@ -5,6 +5,7 @@ import Timer from './Timer';
 import Answer from './Answer';
 import Start from './Start';
 import TimeBar from './TimeBar';
+import Alert from './Alert';
 
 const PaintWrapper = styled.div`
   position: relative;
@@ -21,6 +22,7 @@ const Paint = () => {
       <TimeBar />
       <Answer />
       <Timer />
+      <Alert />
       <Start />
     </PaintWrapper>
   );
