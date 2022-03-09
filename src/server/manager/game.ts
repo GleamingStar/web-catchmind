@@ -35,7 +35,7 @@ class GameManager {
       users: this.room.getUsers(id),
       waitingUsers: [],
       usedAnswer: [],
-      score: [],
+      score: this.room.getUsers(id).map((user) => ({ user, value: 0 })),
     };
     this.games.push(defaultGame);
     this.room.setRoomStatus(id, 'PLAYING');
@@ -51,6 +51,9 @@ class GameManager {
     game.round++;
     game.set = 0;
     game.users = [...this.room.getUsers(targetId)];
+    game.users.forEach(
+      (user) => game.score.find((score) => score.user.id === user.id) ?? game.score.push({ user, value: 0 })
+    );
     game.waitingUsers = [...game.users];
 
     this.startSet(targetId);
@@ -117,7 +120,7 @@ class GameManager {
 
   endGame(targetId: number, type: 'over' | 'stop') {
     clearTimeout(this.timer[targetId]);
-    
+
     this.io.to(targetId.toString()).emit('game/end');
     type === 'over' ? chat.end(this.io, targetId) : chat.stop(this.io, targetId);
 
@@ -133,14 +136,9 @@ class GameManager {
   }
 
   setScore(targetId: number, painterId: number, answerId: number) {
-    const { score, users } = this.getGame(targetId);
-    if (score.filter(({ user }) => user.id === painterId).length === 0)
-      score.push({ user: users.find(({ id }) => id === painterId), value: 1 });
-    else score[score.findIndex(({ user }) => user.id === painterId)].value++;
-
-    if (score.filter(({ user }) => user.id === answerId).length === 0)
-      score.push({ user: users.find(({ id }) => id === answerId), value: 3 });
-    else score[score.findIndex(({ user }) => user.id === answerId)].value += 3;
+    const { score } = this.getGame(targetId);
+    score[score.findIndex(({ user }) => user.id === painterId)].value++;
+    score[score.findIndex(({ user }) => user.id === answerId)].value += 3;
   }
 }
 

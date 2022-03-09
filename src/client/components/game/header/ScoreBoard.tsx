@@ -1,9 +1,9 @@
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
+import { BsBrushFill } from 'react-icons/bs';
 import { isScoreBoardOnSelector } from 'client/atom/modalAtom';
 import { gameAtom, scoreSelector } from 'client/atom/gameAtom';
 import User from 'client/components/common/User';
-import { MAX_GAME_ROUND } from 'shared/constant';
 
 const ScoreBoardWrapper = styled.div<{ isActivated: boolean }>`
   position: absolute;
@@ -45,7 +45,7 @@ const Line = styled.div`
   background-color: #444;
   height: 2px;
 `;
-const Score = styled.div`
+const Score = styled.div<{ isParticipated: boolean }>`
   position: relative;
   height: 18px;
   display: flex;
@@ -53,6 +53,13 @@ const Score = styled.div`
   & + & {
     margin-top: 10px;
   }
+  filter: ${({ isParticipated }) => `contrast(${isParticipated ? 100 : 10}%)`};
+`;
+const Painter = styled.div`
+  position: absolute;
+  left: -1px;
+  color: #cdb699;
+  filter: drop-shadow(1px 1px 1px #000);
 `;
 
 const ScoreBoard = () => {
@@ -62,19 +69,24 @@ const ScoreBoard = () => {
 
   if (!game) return <></>;
 
-  const { round, set, users } = game;
+  const { round, set } = game;
 
   return (
     <ScoreBoardWrapper isActivated={isOn}>
       <Progress>
-        <Round>{`ROUND ${round} / ${MAX_GAME_ROUND}`}</Round>
-        <Set>{`SET ${set} / ${users.length}`}</Set>
+        <Round>{`ROUND ${round}`}</Round>
+        <Set>{`SET ${set}`}</Set>
       </Progress>
       <Line />
       {score.map(({ user, value }) => (
-        <Score>
+        <Score isParticipated={Boolean(game.users.find(({ id }) => id === user.id))}>
           <User key={user.id} {...user} />
           {`${value}점`}
+          {game.painter.id === user.id && (
+            <Painter>
+              <BsBrushFill />
+            </Painter>
+          )}
         </Score>
       ))}
     </ScoreBoardWrapper>
