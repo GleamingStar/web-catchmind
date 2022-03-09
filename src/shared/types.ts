@@ -1,11 +1,5 @@
 import { COLOR } from './constant';
 
-declare module 'node:http' {
-  interface IncomingMessage {
-    session: { user: TUser; roomId: number };
-  }
-}
-
 export enum MessageType {
   System = 'SYSTEM',
   User = 'USER',

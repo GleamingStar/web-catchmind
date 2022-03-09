@@ -1,5 +1,4 @@
 import { Server } from 'socket.io';
-import { NextFunction, Request, RequestHandler, Response } from 'express';
 import { createServer } from 'http';
 import RoomManager from 'server/manager/room';
 import GameManager from 'server/manager/game';
@@ -9,10 +8,8 @@ import setRoomEvent from './event/room';
 import setCanvasEvent from './event/canvas';
 import chat from './chat';
 
-const setSocket = (server: ReturnType<typeof createServer>, session: RequestHandler) => {
+const setSocket = (server: ReturnType<typeof createServer>) => {
   const io = new Server(server);
-
-  io.use(({ request }, next) => session(request as Request, {} as Response, next as NextFunction));
 
   const roomManager = new RoomManager(io);
 
@@ -20,7 +17,7 @@ const setSocket = (server: ReturnType<typeof createServer>, session: RequestHand
 
   io.on('connection', (socket) => {
     socket.on('chat', (message: string) => {
-      const { user, roomId } = socket.request.session;
+      const { user, roomId } = socket.handshake.auth;
       chat.chat(io, roomId, user.name, user.imgUrl, message);
     });
 

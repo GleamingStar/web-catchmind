@@ -7,8 +7,6 @@ let userList: Array<TUser> = [];
 let userId = 0;
 
 const setUserEvent = (socket: Socket) => {
-  const session = socket.request.session;
-
   socket.on('login', (name: string) => {
     if (userList.filter((user) => user.name === name).length > 0) return socket.emit('login/fail/duplicate');
 
@@ -19,12 +17,13 @@ const setUserEvent = (socket: Socket) => {
     };
 
     userList.push(user);
-    session.user = user;
+
+    socket.handshake.auth.user = user;
 
     socket.emit('login/success', user);
   });
 
-  socket.on('disconnect', () => (userList = userList.filter(({ id }) => id !== session.user?.id)));
+  socket.on('disconnect', () => (userList = userList.filter(({ id }) => id !== socket.handshake.auth.user?.id)));
 };
 
 export default setUserEvent;

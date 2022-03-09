@@ -33,7 +33,6 @@ module.exports = () => {
     },
     plugins: [
       new webpack.EnvironmentPlugin({
-        SESSION_KEY: process.env.SESSION_KEY,
         SERVER_URL: process.env.SERVER_URL
       }),
     ],
