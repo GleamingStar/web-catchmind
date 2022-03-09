@@ -66,6 +66,10 @@ const Board = () => {
     socket.emit('canvas/update/request');
   }, []);
 
+  useEffect(() => {
+    setDown(false);
+  }, [isPainterSelector]);
+
   const update = useCallback(() => {
     account.id === currentRoom.users[0].id && socket.emit('canvas/update/response', canvasRef.current.toDataURL());
   }, [account, currentRoom.users]);
@@ -101,8 +105,9 @@ const Board = () => {
   };
 
   const mouseUpHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
-    if (!isValid || !isDown) return;
+    if (!isDown) return;
     setDown(false);
+    if (!isValid) return;
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
