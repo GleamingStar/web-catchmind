@@ -73,7 +73,7 @@ const Tool = () => {
 
   const setEraser = () => {
     setTool('eraser');
-    ctx.lineWidth = 10;
+    ctx.lineWidth = 16;
     ctx.globalCompositeOperation = 'destination-out';
   };
 

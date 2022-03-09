@@ -53,6 +53,7 @@ const Board = () => {
     const context = canvas.getContext('2d');
 
     context.lineWidth = 2;
+    context.lineCap = 'round';
     setTool('pencil');
     setColor('black');
     setCtx(context);
@@ -93,8 +94,6 @@ const Board = () => {
   const mouseMoveHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
     if (!isValid || !isDown) return;
     const { offsetX, offsetY } = nativeEvent;
-    ctx.lineWidth = tool === 'pencil' ? 2 : 10;
-    ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
     ctx.strokeStyle = color;
