@@ -14,6 +14,7 @@ const SenderWrapper = styled.div`
 `;
 const SenderInput = styled.input`
   padding: 9px;
+  padding-right: 30px;
   width: 280px;
   height: 40px;
   border: 1px solid #e9dac1;
