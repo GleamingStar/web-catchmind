@@ -4,6 +4,7 @@
     "module": "commonjs",
     "jsx": "react-jsx",
     "moduleResolution": "node",
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "baseUrl": "./",
     "paths": {

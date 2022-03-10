@@ -1,7 +1,7 @@
 {
   "name": "catch-mind",
-  "version": "0.0.1",
-  "description": "web catchmind",
+  "version": "1.0.0",
+  "description": "drawing and guessing game web application",
   "scripts": {
     "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
     "build": "webpack --mode production --config ./webpack.server.js && webpack --config ./webpack.client.prod.js && node dist/server.js",
@@ -13,9 +13,9 @@
     "axios": "^0.25.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
-    "express-session": "^1.17.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-icons": "^4.3.1",
     "recoil": "^0.6.1",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",

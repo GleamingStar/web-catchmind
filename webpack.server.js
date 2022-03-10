@@ -1,13 +1,14 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
+const webpack = require('webpack');
+const dotenv = require('dotenv');
 
 module.exports = () => {
+  dotenv.config();
+
   return {
     mode: process.env.NODE_ENV,
     target: 'node',
-    node: {
-      __dirname: false,
-    },
     entry: './src/server/server.ts',
     output: {
       filename: 'server.js',
@@ -30,5 +31,10 @@ module.exports = () => {
         },
       ],
     },
+    plugins: [
+      new webpack.EnvironmentPlugin({
+        SERVER_URL: process.env.SERVER_URL
+      }),
+    ],
   };
 };
