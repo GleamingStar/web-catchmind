@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { isUserListOnSelector } from 'client/atom/modalAtom';
+import { isUserListOnSelector } from 'client/atom/headerAtom';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import User from 'client/components/common/User';
 

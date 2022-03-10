@@ -9,7 +9,7 @@ import {
   BsPeopleFill,
 } from 'react-icons/bs';
 import { currentRoomSelector } from 'client/atom/roomAtom';
-import { toggleModalAtom } from 'client/atom/modalAtom';
+import { toggleHeaderModalAtom } from 'client/atom/headerAtom';
 import { gameAtom } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import UserList from './UserList';
@@ -88,7 +88,7 @@ const ReplyWrapper = styled.div`
 const Header = () => {
   const room = useRecoilValue(currentRoomSelector);
   const game = useRecoilValue(gameAtom);
-  const toggleModal = useSetRecoilState(toggleModalAtom);
+  const toggleModal = useSetRecoilState(toggleHeaderModalAtom);
 
   return (
     <HeaderWrapper>

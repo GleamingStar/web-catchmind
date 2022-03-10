@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { BsBrushFill } from 'react-icons/bs';
-import { isScoreBoardOnSelector } from 'client/atom/modalAtom';
+import { isScoreBoardOnSelector } from 'client/atom/headerAtom';
 import { gameAtom, scoreSelector } from 'client/atom/gameAtom';
 import User from 'client/components/common/User';
 
