@@ -1,7 +1,7 @@
 {
   "name": "catch-mind",
-  "version": "0.0.1",
-  "description": "web catchmind",
+  "version": "1.0.0",
+  "description": "drawing and guessing game web application",
   "scripts": {
     "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
     "build": "webpack --mode production --config ./webpack.server.js && webpack --config ./webpack.client.prod.js && node dist/server.js",

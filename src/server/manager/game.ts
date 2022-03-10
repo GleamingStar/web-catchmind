@@ -12,12 +12,14 @@ class GameManager {
   io: Server;
   room: roomManager;
   timer: { [key in number]: ReturnType<typeof setTimeout> };
+  answers: Array<string>;
 
   constructor(io: Server, roomManager: roomManager) {
     this.games = [];
     this.io = io;
     this.room = roomManager;
     this.timer = {};
+    this.answers = mockupData.answers;
   }
 
   getGame(targetId: number) {
@@ -129,8 +131,7 @@ class GameManager {
   }
 
   setAnswer(usedAnswer: Array<string>): string {
-    const { answers } = mockupData;
-    const answer = answers[Math.floor(Math.random() * answers.length)];
+    const answer = this.answers[Math.floor(Math.random() * this.answers.length)];
 
     return usedAnswer.includes(answer) ? this.setAnswer(usedAnswer) : answer;
   }
