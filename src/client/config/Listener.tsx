@@ -44,7 +44,6 @@ const Listener = () => {
 
     socket.on('login/fail/duplicate', () => setLoginAlert(LOGIN_ALERT_MESSAGE.DUPLICATED));
 
-
     socket.on('game/set/start', (game: TGame) => {
       setGame(game);
       setTimer(MAX_SET_TIMER);
@@ -63,10 +62,10 @@ const Listener = () => {
 
   useEffect(() => {
     if (!canvasContext) return;
-    socket.on('canvas/draw', ({ tool, color, location }: TCanvas) => {
+    socket.on('canvas/draw', ({ tool, thickness, color, location }: TCanvas) => {
       const { x0, y0, x1, y1 } = location;
       canvasContext.beginPath();
-      canvasContext.lineWidth = tool === 'pencil' ? 2 : 10;
+      canvasContext.lineWidth = thickness;
       canvasContext.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
       canvasContext.moveTo(x0, y0);
       canvasContext.lineTo(x1, y1);

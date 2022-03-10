@@ -11,6 +11,11 @@ export const toolAtom = atom<'pencil' | 'eraser'>({
   default: 'pencil',
 });
 
+export const thicknessAtom = atom<number>({
+  key: 'thickness',
+  default: 2,
+});
+
 export const colorAtom = atom<TColor>({
   key: 'color',
   default: 'black',
@@ -24,4 +29,19 @@ const eraserInlineSVG =
 export const cursorSelector = selector({
   key: 'cursor',
   get: ({ get }) => (get(toolAtom) === 'pencil' ? pencilInlineSVG(get(colorAtom)) : eraserInlineSVG),
+});
+
+export const toggleCanvasModalAtom = atom<number>({
+  key: 'toggleCanvasModal',
+  default: 1,
+});
+
+export const isThicknessOnSelector = selector<boolean>({
+  key: 'isThicknessOn',
+  get: ({ get }) => get(toggleCanvasModalAtom) === 0,
+});
+
+export const isPaletteOnSelector = selector<boolean>({
+  key: 'isPaletteOn',
+  get: ({ get }) => get(toggleCanvasModalAtom) === 1,
 });

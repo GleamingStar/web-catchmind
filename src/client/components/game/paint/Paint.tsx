@@ -1,11 +1,11 @@
 import styled from 'styled-components';
 import Board from './Board';
-import Tool from './Tool';
-import Timer from './Timer';
-import Answer from './Answer';
-import Start from './Start';
-import TimeBar from './TimeBar';
-import Alert from './Alert';
+import Tool from './tool/Tool';
+import Timer from './modal/Timer';
+import Answer from './modal/Answer';
+import Start from './modal/Start';
+import TimeBar from './modal/TimeBar';
+import Alert from './modal/Alert';
 
 const PaintWrapper = styled.div`
   position: relative;
@@ -27,6 +27,5 @@ const Paint = () => {
     </PaintWrapper>
   );
 };
-
 
 export default Paint;

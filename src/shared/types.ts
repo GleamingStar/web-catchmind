@@ -45,6 +45,7 @@ export type TColor = typeof COLOR[number];
 
 export type TCanvas = {
   tool: 'pencil' | 'eraser';
+  thickness: number;
   color: TColor;
   location: { x0: number; y0: number; x1: number; y1: number };
 };

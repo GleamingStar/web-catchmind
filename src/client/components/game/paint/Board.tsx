@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { MouseEvent, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
-import { colorAtom, contextAtom, cursorSelector, toolAtom } from 'client/atom/canvasAtom';
+import { colorAtom, contextAtom, cursorSelector, thicknessAtom, toolAtom } from 'client/atom/canvasAtom';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import { gameAtom, isPainterSelector } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
@@ -43,6 +43,7 @@ const Board = () => {
   const [location, setLocation] = useState({ x0: 0, y0: 0 });
   const [ctx, setCtx] = useRecoilState(contextAtom);
   const [tool, setTool] = useRecoilState(toolAtom);
+  const [thickness, setThickness] = useRecoilState(thicknessAtom);
   const [color, setColor] = useRecoilState(colorAtom);
   const [isDown, setDown] = useState(false);
 
@@ -55,6 +56,7 @@ const Board = () => {
     context.lineWidth = 2;
     context.lineCap = 'round';
     setTool('pencil');
+    setThickness(2);
     setColor('black');
     setCtx(context);
 
@@ -96,9 +98,8 @@ const Board = () => {
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
-    ctx.strokeStyle = color;
     ctx.stroke();
-    socket.emit('canvas/draw', { tool, color, location: { ...location, x1: offsetX, y1: offsetY } });
+    socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1: offsetX, y1: offsetY } });
 
     setLocation({ x0: offsetX, y0: offsetY });
   };
@@ -111,7 +112,7 @@ const Board = () => {
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
     ctx.stroke();
-    socket.emit('canvas/draw', { tool, color, location: { ...location, x1: offsetX, y1: offsetY } });
+    socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1: offsetX, y1: offsetY } });
   };
 
   return (
