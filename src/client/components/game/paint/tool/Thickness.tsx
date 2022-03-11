@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsBorderWidth } from 'react-icons/bs';
-import { contextAtom, isThicknessOnSelector, thicknessAtom, toggleCanvasModalAtom } from 'client/atom/canvasAtom';
+import { isThicknessOnSelector, thicknessAtom, toggleCanvasModalAtom } from 'client/atom/canvasAtom';
 
 const OverflowWrapper = styled.div<{ isActivated: boolean }>`
   width: ${({ isActivated }) => `${isActivated ? 218 : 32}px`};
@@ -77,16 +77,10 @@ const Thickness = () => {
 };
 
 const Line = ({ height }: { height: number }) => {
-  const ctx = useRecoilValue(contextAtom);
   const [thickness, setThickness] = useRecoilState(thicknessAtom);
 
-  const clickHandler = () => {
-    setThickness(height);
-    ctx.lineWidth = height;
-  };
-
   return (
-    <LineWrapper onClick={clickHandler} isSelected={height === thickness}>
+    <LineWrapper onClick={() => setThickness(height)} isSelected={height === thickness}>
       <LineContent height={height} />
     </LineWrapper>
   );

@@ -1,16 +1,16 @@
 import styled from 'styled-components';
 import { BsPalette } from 'react-icons/bs';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { colorAtom, contextAtom, isPaletteOnSelector, toggleCanvasModalAtom, toolAtom } from 'client/atom/canvasAtom';
+import { colorAtom, isPaletteOnSelector, toggleCanvasModalAtom, toolAtom } from 'client/atom/canvasAtom';
 import { COLOR } from 'shared/constant';
 
 const OverflowWrapper = styled.div<{ isActivated: boolean }>`
   width: ${({ isActivated }) => `${isActivated ? 250 : 32}px`};
   border-radius: 10px;
   background-color: ${({ isActivated }) => `${isActivated ? '#e6ddc4' : '#dfd3c3'}`};
-  
+
   overflow: hidden;
-  
+
   &:hover {
     background-color: #e6ddc4;
     filter: ${({ isActivated }) => `opacity(${isActivated ? 100 : 40}%)`};
@@ -48,7 +48,6 @@ const Color = styled.div<{ color: string }>`
 `;
 
 const Palette = () => {
-  const ctx = useRecoilValue(contextAtom);
   const setTool = useSetRecoilState(toolAtom);
   const toggle = useSetRecoilState(toggleCanvasModalAtom);
   const isActivated = useRecoilValue(isPaletteOnSelector);
@@ -65,8 +64,6 @@ const Palette = () => {
             onClick={() => {
               setTool('pencil');
               setColor(color);
-              ctx.globalCompositeOperation = 'source-over';
-              ctx.strokeStyle = color;
             }}
           />
         ))}

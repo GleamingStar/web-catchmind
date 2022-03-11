@@ -11,20 +11,29 @@ export const contextAtom = atom<CanvasRenderingContext2D>({
       onSet((ctx) => {
         socket.off('canvas/draw');
         socket.off('canvas/reset');
+        socket.off('canvas/update/response');
 
         socket.on('canvas/draw', ({ tool, thickness, color, location }: TCanvas) => {
           const { x0, y0, x1, y1 } = location;
           ctx.beginPath();
-          ctx.lineWidth = thickness;
-          ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
           ctx.moveTo(x0, y0);
           ctx.lineTo(x1, y1);
+          ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
+          ctx.lineWidth = thickness;
           ctx.strokeStyle = color;
           ctx.stroke();
           ctx.closePath();
         });
 
         socket.on('canvas/reset', () => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE));
+
+        socket.on('canvas/update/response', (canvas: string) => {
+          const img = new Image();
+          img.onload = () => ctx.drawImage(img, 0, 0);
+          img.src = canvas;
+          socket.off('canvas/update/response');
+        });
+        socket.emit('canvas/update/request');
       });
     },
   ],
