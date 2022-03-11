@@ -45,16 +45,6 @@ const Tool = () => {
   const setTool = useSetRecoilState(toolAtom);
   const isPainter = useRecoilValue(isPainterSelector);
 
-  const setPencil = () => {
-    setTool('pencil');
-    ctx.globalCompositeOperation = 'source-over';
-  };
-
-  const setEraser = () => {
-    setTool('eraser');
-    ctx.globalCompositeOperation = 'destination-out';
-  };
-
   const clickResetHandler = () => {
     if (!isPainter) return;
     ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
@@ -63,10 +53,10 @@ const Tool = () => {
 
   return (
     <ToolWrapper>
-      <IconWrapper onClick={setPencil}>
+      <IconWrapper onClick={() => setTool('pencil')}>
         <BsPencil />
       </IconWrapper>
-      <IconWrapper onClick={setEraser}>
+      <IconWrapper onClick={() => setTool('eraser')}>
         <BsEraser />
       </IconWrapper>
       <IconWrapper onClick={clickResetHandler}>

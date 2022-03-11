@@ -53,24 +53,11 @@ const Board = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    context.lineWidth = 2;
     context.lineCap = 'round';
     setTool('pencil');
     setThickness(2);
     setColor('black');
     setCtx(context);
-
-    socket.on('canvas/update/response', (canvas: string) => {
-      const img = new Image();
-      img.onload = () => context.drawImage(img, 0, 0);
-      img.src = canvas;
-      socket.off('canvas/update/response');
-    });
-    socket.emit('canvas/update/request');
-
-    return () => {
-      socket.off('canvas/update/response');
-    };
   }, []);
 
   useEffect(() => {
@@ -102,6 +89,7 @@ const Board = () => {
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
+    ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
     ctx.strokeStyle = color;
     ctx.lineWidth = thickness;
     ctx.stroke();
@@ -117,6 +105,7 @@ const Board = () => {
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
+    ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
     ctx.strokeStyle = color;
     ctx.lineWidth = thickness;
     ctx.stroke();

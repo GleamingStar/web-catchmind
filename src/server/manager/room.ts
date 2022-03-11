@@ -1,5 +1,6 @@
-import { TRoom, TUser } from 'shared/types';
 import { Server } from 'socket.io';
+import chat from 'server/socket/chat';
+import { TRoom, TUser } from 'shared/types';
 
 class RoomManager {
   roomId: number;
@@ -32,12 +33,14 @@ class RoomManager {
 
   joinRoom(targetId: number, user: TUser) {
     this.getRoom(targetId).users.push(user);
+    chat.enter(this.io, targetId, user.name);
     this.update();
   }
 
-  leaveRoom(targetId: number, userId: number) {
+  leaveRoom(targetId: number, user: TUser) {
     const room = this.getRoom(targetId);
-    room.users = room.users.filter(({ id }) => id !== userId);
+    room.users = room.users.filter(({ id }) => id !== user.id);
+    chat.leave(this.io, targetId, user.name);
     this.update();
   }
 
