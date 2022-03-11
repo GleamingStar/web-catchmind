@@ -1,9 +1,33 @@
 import { atom, selector } from 'recoil';
-import { TColor } from 'shared/types';
+import socket from 'client/config/socket';
+import { CANVAS_SIZE } from 'shared/constant';
+import { TCanvas, TColor } from 'shared/types';
 
 export const contextAtom = atom<CanvasRenderingContext2D>({
-  key: 'canvas',
+  key: 'canvasContext',
   default: null,
+  effects: [
+    ({ onSet }) => {
+      onSet((ctx) => {
+        socket.off('canvas/draw');
+        socket.off('canvas/reset');
+
+        socket.on('canvas/draw', ({ tool, thickness, color, location }: TCanvas) => {
+          const { x0, y0, x1, y1 } = location;
+          ctx.beginPath();
+          ctx.lineWidth = thickness;
+          ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x1, y1);
+          ctx.strokeStyle = color;
+          ctx.stroke();
+          ctx.closePath();
+        });
+
+        socket.on('canvas/reset', () => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE));
+      });
+    },
+  ],
 });
 
 export const toolAtom = atom<'pencil' | 'eraser'>({

@@ -71,6 +71,7 @@ class GameManager {
     game.answer = this.setAnswer(game.usedAnswer);
     this.setTimer(id, 180);
     this.io.to(id.toString()).emit('game/set/start', game);
+    this.io.to(id.toString()).emit('canvas/reset');
   }
 
   setTimer(targetId: number, time: number) {

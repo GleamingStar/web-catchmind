@@ -67,6 +67,10 @@ const Board = () => {
       socket.off('canvas/update/response');
     });
     socket.emit('canvas/update/request');
+
+    return () => {
+      socket.off('canvas/update/response');
+    };
   }, []);
 
   useEffect(() => {

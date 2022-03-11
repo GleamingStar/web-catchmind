@@ -21,7 +21,6 @@ const chat = (io: Server, roomId: number, name: string, imgUrl: string, message:
   io.to(roomId.toString()).emit('chat', makeChat(name, imgUrl, message));
 
 const enter = (socket: Socket, roomId: number, name: string) => {
-  socket.emit('chat', makeSystemMessage(`${name}님 환영합니다!`));
   socket.broadcast.to(roomId.toString()).emit('chat', makeSystemMessage(`${name}님이 참여했습니다.`));
 };
 
