@@ -4,7 +4,6 @@ import { useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
 import Entrance from './entrance/Entrance';
-const Listener = lazy(() => import('client/config/Listener'));
 const Lobby = lazy(() => import('./lobby/Lobby'));
 const Game = lazy(() => import('./game/Game'));
 
@@ -25,10 +24,7 @@ const Main = () => {
   const isInRoom = useRecoilValue(currentRoomIndexAtom) !== null;
   return (
     <MainWrapper>
-      <Suspense fallback={<></>}>
-        <Listener />
-        {isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}
-      </Suspense>
+      <Suspense fallback={<></>}>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}</Suspense>
     </MainWrapper>
   );
 };

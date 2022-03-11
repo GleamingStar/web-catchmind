@@ -7,7 +7,7 @@ const setRoomEvent = (socket: Socket, roomManager: RoomManager) => {
 
   auth.roomId = null;
 
-  socket.on('login', () => socket.emit('room/update', roomManager.getRooms()));
+  socket.on('room/update', () => socket.emit('room/update', roomManager.getRooms()));
 
   socket.on('room/create', (roomName: string) => {
     const roomId = roomManager.createRoom(roomName, auth.user);
