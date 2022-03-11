@@ -67,6 +67,10 @@ const Board = () => {
       socket.off('canvas/update/response');
     });
     socket.emit('canvas/update/request');
+
+    return () => {
+      socket.off('canvas/update/response');
+    };
   }, []);
 
   useEffect(() => {
@@ -98,6 +102,8 @@ const Board = () => {
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = thickness;
     ctx.stroke();
     socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1: offsetX, y1: offsetY } });
 
@@ -111,6 +117,8 @@ const Board = () => {
     const { offsetX, offsetY } = nativeEvent;
     ctx.moveTo(location.x0, location.y0);
     ctx.lineTo(offsetX, offsetY);
+    ctx.strokeStyle = color;
+    ctx.lineWidth = thickness;
     ctx.stroke();
     socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1: offsetX, y1: offsetY } });
   };
