@@ -26,7 +26,7 @@ const ToolWrapper = styled.div`
     top: 590px;
     left: 10px;
     width: 180px;
-    height: calc(100vh - 600px);
+    height: calc(100% - 600px);
     min-height: 100px;
     flex-direction: column;
     justify-content: space-around;

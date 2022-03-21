@@ -15,8 +15,8 @@ const MainWrapper = styled.div`
 
   @media screen and (max-width: 800px) {
     width: 500px;
-    height: 100vh;
     min-height: 700px;
+    height: calc(var(--vh, 1vh) * 100);
   }
 
   background-color: #dfd3c3;
@@ -24,6 +24,19 @@ const MainWrapper = styled.div`
 
   user-select: none;
 `;
+
+const throttle = (callback, delay) => {
+  let previousCall = new Date().getTime();
+
+  return (...args) => {
+    const time = new Date().getTime();
+
+    if (time - previousCall >= delay) {
+      previousCall = time;
+      callback(...args);
+    }
+  };
+};
 
 const Main = () => {
   const isLogined = useRecoilValue(accountAtom) !== null;
@@ -34,6 +47,16 @@ const Main = () => {
       document
         .getElementsByName('viewport')[0]
         .setAttribute('content', `width=device-width, initial-scale=${window.innerWidth / 500}`);
+
+    const resizeHandler = throttle(
+      () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`),
+      100
+    );
+    window.addEventListener('resize', resizeHandler);
+
+    return () => {
+      window.removeEventListener('resize', resizeHandler);
+    };
   }, []);
 
   return (

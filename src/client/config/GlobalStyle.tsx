@@ -21,6 +21,9 @@ ul {
 input {
   outline: none;
 }
+body {
+  overscroll-behavior-y: contain;
+}
 `;
 
 export default GlobalStyle;

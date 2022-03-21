@@ -8,18 +8,18 @@ import { gameAtom, isPainterSelector } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import { CANVAS_SIZE } from 'shared/constant';
 
+const BORDER = 4;
+
 const BoardWrapper = styled.div`
   position: relative;
   width: 500px;
   height: 500px;
   background-color: #fff;
-  border: 4px #cdb699 solid;
+  border: ${BORDER}px #cdb699 solid;
 `;
 const Canvas = styled.canvas<{ cursor: string }>`
   cursor: url(${({ cursor }) => `"${cursor}"`}) 0 16, pointer;
 `;
-
-const BORDER = 4;
 
 const throttle = (callback, delay) => {
   let previousCall = new Date().getTime();

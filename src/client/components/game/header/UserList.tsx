@@ -18,8 +18,9 @@ const UserListWrapper = styled.div<{ isActivated: boolean }>`
     left: 0;
     width: 200px;
     transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '-220px'})`};
-    height: calc(100vh - 580px);
+    height: calc(var(--vh, 1vh) * 100 - 580px);
     min-height: 120px;
+    max-height: none;
   }
 
   border: 3px solid #cdb699;

@@ -10,7 +10,7 @@ const ContainerWrapper = styled.div`
   width: 300px;
   height: 460px;
   @media screen and (max-width:800px) {
-    height: calc(100vh - 560px);
+    height: calc(100% - 560px);
     min-height: 140px;
   }
   background-color: #fbf8f1;
