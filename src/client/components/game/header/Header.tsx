@@ -46,8 +46,10 @@ const UserListButton = styled.div`
   top: 10px;
   right: 10px;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.25s;
@@ -59,8 +61,10 @@ const ScoreBoardButton = styled.div<{ isActivated: boolean }>`
   bottom: 10px;
   right: 10px;
 
-  &:hover {
-    filter: ${({ isActivated }) => `brightness(${isActivated ? '250' : '100'}%)`};
+  @media (hover: hover) {
+    &:hover {
+      filter: ${({ isActivated }) => `brightness(${isActivated ? '250' : '100'}%)`};
+    }
   }
 
   transition: filter 0.25s;
@@ -75,8 +79,10 @@ const ExitWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.25s;

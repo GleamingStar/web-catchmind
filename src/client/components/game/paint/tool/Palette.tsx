@@ -12,9 +12,11 @@ const OverflowWrapper = styled.div<{ isActivated: boolean }>`
 
   overflow: hidden;
 
-  &:hover {
-    background-color: #e6ddc4;
-    filter: ${({ isActivated }) => `opacity(${isActivated ? 100 : 40}%)`};
+  @media (hover: hover) {
+    &:hover {
+      background-color: #e6ddc4;
+      filter: ${({ isActivated }) => `opacity(${isActivated ? 100 : 40}%)`};
+    }
   }
 
   transition: width 0.8s, background-color 0.5s, filter 0.5s;
@@ -47,8 +49,10 @@ const Color = styled.div<{ color: string; isSelected: boolean }>`
 
   filter: ${({ isSelected }) => `opacity(${isSelected ? 20 : 100}%)`};
 
-  &:hover {
-    filter: opacity(40%);
+  @media (hover: hover) {
+    &:hover {
+      filter: opacity(40%);
+    }
   }
 
   transition: filter 0.25s;

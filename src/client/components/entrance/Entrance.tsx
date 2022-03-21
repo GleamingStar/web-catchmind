@@ -44,8 +44,10 @@ const LoginButton = styled.div`
 
   color: #493323;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.3s;
@@ -66,8 +68,10 @@ const GitHubButton = styled.div`
 
   color: #493323;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.3s;

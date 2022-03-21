@@ -20,8 +20,10 @@ const NewRoomWrapper = styled.div<{ isActivated: boolean }>`
   justify-content: space-evenly;
   align-items: center;
 
-  &:hover {
-    filter: brightness(110%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(110%);
+    }
   }
 
   transition: filter 0.2s;
