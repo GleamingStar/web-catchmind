@@ -20,6 +20,11 @@ const HeaderWrapper = styled.div`
   right: 0;
   width: 300px;
   height: 80px;
+  @media screen and (max-width: 800px) {
+    top: 500px;
+    left: 0;
+    width: 200px;
+  }
   background-color: #e9dac1;
 
   color: #493323;
@@ -41,8 +46,10 @@ const UserListButton = styled.div`
   top: 10px;
   right: 10px;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.25s;
@@ -54,8 +61,10 @@ const ScoreBoardButton = styled.div<{ isActivated: boolean }>`
   bottom: 10px;
   right: 10px;
 
-  &:hover {
-    filter: ${({ isActivated }) => `brightness(${isActivated ? '250' : '100'}%)`};
+  @media (hover: hover) {
+    &:hover {
+      filter: ${({ isActivated }) => `brightness(${isActivated ? '250' : '100'}%)`};
+    }
   }
 
   transition: filter 0.25s;
@@ -70,8 +79,10 @@ const ExitWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.25s;
