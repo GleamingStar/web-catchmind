@@ -14,6 +14,8 @@ export const gameAtom = atom<TGame>({
       socket.on('room/leave', resetSelf);
       socket.on('game/end', resetSelf);
 
+      socket.emit('game/update')
+
       return () => {
         socket.off('game/set/start', setSelf);
         socket.off('game/update', setSelf);

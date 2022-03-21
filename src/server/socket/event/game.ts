@@ -16,8 +16,8 @@ const setGameEvent = (socket: Socket, gameManager: GameManager) => {
     gameManager.answer(roomId, user);
   });
 
-  socket.on('room/join', (targetId: number) => {
-    const game = gameManager.getGame(targetId);
+  socket.on('game/update', () => {
+    const game = gameManager.getGame(socket.handshake.auth.roomId);
     game && socket.emit('game/update', game);
   });
 
