@@ -3,6 +3,7 @@ import RoomList from './RoomList';
 
 const LobbyWrapper = styled.div`
   position: relative;
+  height: 100%;
 `;
 
 const Lobby = () => (

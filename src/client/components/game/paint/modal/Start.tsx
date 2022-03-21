@@ -7,7 +7,7 @@ import socket from 'client/config/socket';
 const StartWrapper = styled.div<{ isActivated: boolean }>`
   position: absolute;
   right: 10px;
-  bottom: 110px;
+  top: 455px;
   padding: 5px;
   border-radius: 5px;
 

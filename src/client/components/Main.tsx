@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
@@ -13,6 +13,12 @@ const MainWrapper = styled.div`
   width: 800px;
   height: 600px;
 
+  @media screen and (max-width: 800px) {
+    width: 500px;
+    height: 100vh;
+    min-height: 700px;
+  }
+
   background-color: #dfd3c3;
   overflow: hidden;
 
@@ -22,6 +28,14 @@ const MainWrapper = styled.div`
 const Main = () => {
   const isLogined = useRecoilValue(accountAtom) !== null;
   const isInRoom = useRecoilValue(currentRoomIndexAtom) !== null;
+
+  useEffect(() => {
+    window.innerWidth < 500 &&
+      document
+        .getElementsByName('viewport')[0]
+        .setAttribute('content', `width=device-width, initial-scale=${window.innerWidth / 500}`);
+  }, []);
+
   return (
     <MainWrapper>
       <Suspense fallback={<></>}>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}</Suspense>

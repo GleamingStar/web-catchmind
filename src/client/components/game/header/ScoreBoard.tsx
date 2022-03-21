@@ -14,6 +14,14 @@ const ScoreBoardWrapper = styled.div<{ isActivated: boolean }>`
   top: 90px;
   right: 10px;
   transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '260px'})`};
+  @media screen and (max-width: 800px) {
+    top: 80px;
+    left: 0;
+    width: 200px;
+    transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '-200px'})`};
+    height: calc(100vh - 580px);
+    min-height: 120px;
+  }
 
   border: 3px solid #cdb699;
   border-radius: 10px;
@@ -79,8 +87,8 @@ const ScoreBoard = () => {
       </Progress>
       <Line />
       {score.map(({ user, value }) => (
-        <Score isParticipated={Boolean(game.users.find(({ id }) => id === user.id))}>
-          <User key={user.id} {...user} />
+        <Score key={user.id} isParticipated={Boolean(game.users.find(({ id }) => id === user.id))}>
+          <User {...user} />
           {`${value}점`}
           {game.painter.id === user.id && (
             <Painter>

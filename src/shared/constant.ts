@@ -5,7 +5,7 @@ export const SERVER_URL =
 
 export const PROFILE_IMAGE_SIZE = 13;
 
-export const MAX_USER_NAME_LENGTH = 10;
+export const MAX_USER_NAME_LENGTH = 8;
 
 export const MAX_ROOM_NAME_LENGTH = 8;
 

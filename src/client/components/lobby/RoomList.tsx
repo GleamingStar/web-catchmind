@@ -9,7 +9,7 @@ const RoomListWrapper = styled.div`
   top: 20px;
   right: 20px;
   padding: 20px;
-  height: 560px;
+  height: calc(100% - 40px);
 
   display: flex;
   flex-direction: column;

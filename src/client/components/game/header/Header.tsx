@@ -20,6 +20,11 @@ const HeaderWrapper = styled.div`
   right: 0;
   width: 300px;
   height: 80px;
+  @media screen and (max-width: 800px) {
+    top: 500px;
+    left: 0;
+    width: 200px;
+  }
   background-color: #e9dac1;
 
   color: #493323;

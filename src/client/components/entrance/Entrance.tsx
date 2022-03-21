@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ChangeEvent, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { BsFillPersonPlusFill, BsGithub } from 'react-icons/bs';
-import { loginAlertAtom } from 'client/atom/alertAtom';
+import { loginAlertAtom } from 'client/atom/miscAtom';
 import socket from 'client/config/socket';
 import { LOGIN_ALERT_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
 

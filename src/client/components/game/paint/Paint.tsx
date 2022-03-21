@@ -11,6 +11,10 @@ const PaintWrapper = styled.div`
   position: relative;
   width: 500px;
   height: 600px;
+  @media screen and (max-width: 800px) {
+    height: 100vh;
+    min-height: 700px;
+  }
   overflow: hidden;
 `;
 

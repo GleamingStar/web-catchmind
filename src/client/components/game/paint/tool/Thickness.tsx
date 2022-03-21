@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsBorderWidth } from 'react-icons/bs';
 import { isThicknessOnSelector, thicknessAtom, toggleCanvasModalAtom } from 'client/atom/canvasAtom';
+import { isPortraitAtom } from 'client/atom/miscAtom';
 
 const OverflowWrapper = styled.div<{ isActivated: boolean }>`
   width: ${({ isActivated }) => `${isActivated ? 218 : 32}px`};
@@ -17,8 +18,13 @@ const OverflowWrapper = styled.div<{ isActivated: boolean }>`
 
   transition: width 0.8s, background-color 0.5s, filter 0.5s;
 `;
+const PortraitWrapper = styled.div`
+  width: 180px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
 const ThicknessWrapper = styled.div<{ isActivated: boolean }>`
-  position: relative;
   width: 218px;
   height: 30px;
   padding: 8px;
@@ -60,17 +66,17 @@ const LineContent = styled.div<{ height: number }>`
 const Thickness = () => {
   const toggle = useSetRecoilState(toggleCanvasModalAtom);
   const isActivated = useRecoilValue(isThicknessOnSelector);
+  const isPortrait = useRecoilValue(isPortraitAtom);
 
-  return (
+  const lines = [1, 2, 4, 6, 8, 16].map((e) => <Line key={e} height={e} />);
+
+  return isPortrait ? (
+    <PortraitWrapper>{lines}</PortraitWrapper>
+  ) : (
     <OverflowWrapper isActivated={isActivated}>
       <ThicknessWrapper isActivated={isActivated} onClick={() => toggle(0)}>
         <BsBorderWidth />
-        <Line height={1} />
-        <Line height={2} />
-        <Line height={4} />
-        <Line height={6} />
-        <Line height={8} />
-        <Line height={16} />
+        {lines}
       </ThicknessWrapper>
     </OverflowWrapper>
   );

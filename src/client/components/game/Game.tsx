@@ -4,8 +4,8 @@ import ChattingRoom from './chattingRoom/ChattingRoom';
 
 const Game = () => (
   <>
-    <Header />
     <Paint />
+    <Header />
     <ChattingRoom />
   </>
 );

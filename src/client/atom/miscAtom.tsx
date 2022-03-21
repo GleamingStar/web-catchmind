@@ -31,3 +31,31 @@ export const roomAlertAtom = atom({
     },
   ],
 });
+
+const throttle = (callback, delay) => {
+  let previousCall = new Date().getTime();
+
+  return (...args) => {
+    const time = new Date().getTime();
+
+    if (time - previousCall >= delay) {
+      previousCall = time;
+      callback(...args);
+    }
+  };
+};
+
+export const isPortraitAtom = atom({
+  key: 'isPortrait',
+  default: window.innerWidth < 800,
+  effects: [
+    ({ setSelf }) => {
+      const resizeHandler = throttle(() => setSelf(window.innerWidth < 800), 100);
+      window.addEventListener('resize', resizeHandler);
+
+      return () => {
+        window.removeEventListener('resize', resizeHandler);
+      };
+    },
+  ],
+});

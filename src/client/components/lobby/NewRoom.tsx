@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { useRecoilState } from 'recoil';
 import { BsFolderPlus } from 'react-icons/bs';
-import { roomAlertAtom } from 'client/atom/alertAtom';
+import { roomAlertAtom } from 'client/atom/miscAtom';
 import socket from 'client/config/socket';
 import { MAX_ROOM_NAME_LENGTH, ROOM_ALERT_MESSAGE } from 'shared/constant';
 
