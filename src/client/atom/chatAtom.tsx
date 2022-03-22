@@ -9,10 +9,12 @@ export const chatLogAtom = atom<Array<TChat>>({
     ({ setSelf, resetSelf }) => {
       socket.on('chat', (chat: TChat) => setSelf((log: Array<TChat>) => [...log, chat]));
       socket.on('room/leave', resetSelf);
+      socket.on('disconnect', resetSelf);
 
       return () => {
         socket.off('chat');
         socket.off('room/leave', resetSelf);
+        socket.off('disconnect', resetSelf);
       };
     },
   ],

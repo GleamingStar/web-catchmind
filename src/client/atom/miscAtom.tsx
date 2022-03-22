@@ -32,6 +32,24 @@ export const roomAlertAtom = atom({
   ],
 });
 
+export const disconnectAlertAtom = atom({
+  key: 'disconnectAlert',
+  default: false,
+  effects: [
+    ({ setSelf }) => {
+      const onHandler = () => setSelf(true);
+      const offHandler = () => setSelf(false);
+      socket.on('disconnect', onHandler);
+      socket.on('connect', offHandler);
+
+      return () => {
+        socket.off('disconnect', onHandler);
+        socket.off('connect', offHandler);
+      };
+    },
+  ],
+});
+
 const throttle = (callback, delay) => {
   let previousCall = new Date().getTime();
 
