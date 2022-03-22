@@ -1,6 +1,6 @@
 {
   "name": "catch-mind",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "drawing and guessing game web application",
   "scripts": {
     "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
@@ -35,7 +35,6 @@
     "@types/node": "^17.0.15",
     "@types/react": "^17.0.39",
     "@types/react-dom": "^17.0.11",
-    "@types/socket.io-client": "^3.0.0",
     "@types/styled-components": "^5.1.21",
     "babel-loader": "^8.2.3",
     "html-webpack-plugin": "^5.5.0",
