@@ -1,25 +1,26 @@
 import styled from 'styled-components';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
-import {
-  BsFillFileRuledFill,
-  BsFillReplyFill,
-  BsFillPlayCircleFill,
-  BsHourglassSplit,
-  BsDoorOpenFill,
-  BsPeopleFill,
-} from 'react-icons/bs';
+import { BsFillFileRuledFill, BsFillReplyFill, BsDoorOpenFill, BsPeopleFill } from 'react-icons/bs';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import { toggleHeaderModalAtom } from 'client/atom/headerAtom';
 import { gameAtom } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
+import Waiting from 'client/components/common/Waiting';
+import Playing from 'client/components/common/Playing';
 import UserList from './UserList';
 import ScoreBoard from './ScoreBoard';
 
 const HeaderWrapper = styled.div`
   position: absolute;
+  top: 0;
   right: 0;
   width: 300px;
   height: 80px;
+  @media screen and (max-width: 800px) {
+    top: 500px;
+    left: 0;
+    width: 200px;
+  }
   background-color: #e9dac1;
 
   color: #493323;
@@ -41,8 +42,10 @@ const UserListButton = styled.div`
   top: 10px;
   right: 10px;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.25s;
@@ -54,8 +57,10 @@ const ScoreBoardButton = styled.div<{ isActivated: boolean }>`
   bottom: 10px;
   right: 10px;
 
-  &:hover {
-    filter: ${({ isActivated }) => `brightness(${isActivated ? '250' : '100'}%)`};
+  @media (hover: hover) {
+    &:hover {
+      filter: ${({ isActivated }) => `brightness(${isActivated ? '250' : '100'}%)`};
+    }
   }
 
   transition: filter 0.25s;
@@ -70,15 +75,16 @@ const ExitWrapper = styled.div`
   display: flex;
   align-items: center;
 
-  &:hover {
-    filter: brightness(250%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(250%);
+    }
   }
 
   transition: filter 0.25s;
 
   cursor: pointer;
 `;
-const DoorWrapper = styled.div``;
 const ReplyWrapper = styled.div`
   margin-left: -3px;
   display: flex;
@@ -94,7 +100,9 @@ const Header = () => {
     <HeaderWrapper>
       <Exit />
       <RoomName>{`#${room?.id} ${room?.name}`}</RoomName>
-      <RoomStatus>{room?.status === 'WAITING' ? <BsHourglassSplit /> : <BsFillPlayCircleFill />}</RoomStatus>
+      <RoomStatus>
+        {room?.status === 'WAITING' ? <Waiting size={16} color="493323" /> : <Playing size={16} />}
+      </RoomStatus>
       <UserListButton onClick={() => toggleModal((status) => (status === 1 ? 0 : 1))}>
         <BsPeopleFill />
       </UserListButton>
@@ -112,9 +120,7 @@ const Header = () => {
 
 const Exit = () => (
   <ExitWrapper onClick={() => socket.emit('room/leave')}>
-    <DoorWrapper>
-      <BsDoorOpenFill />
-    </DoorWrapper>
+    <BsDoorOpenFill />
     <ReplyWrapper>
       <BsFillReplyFill size={8} />
     </ReplyWrapper>

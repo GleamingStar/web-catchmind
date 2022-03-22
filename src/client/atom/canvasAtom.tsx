@@ -1,9 +1,50 @@
 import { atom, selector } from 'recoil';
-import { TColor } from 'shared/types';
+import socket from 'client/config/socket';
+import { CANVAS_SIZE } from 'shared/constant';
+import { TCanvas, TColor } from 'shared/types';
 
 export const contextAtom = atom<CanvasRenderingContext2D>({
-  key: 'canvas',
+  key: 'canvasContext',
   default: null,
+  effects: [
+    ({ onSet }) => {
+      onSet((ctx) => {
+        socket.off('canvas/draw');
+        socket.off('canvas/reset');
+        socket.off('canvas/update/response');
+
+        socket.on('canvas/draw', ({ tool, thickness, color, location }: TCanvas) => {
+          const { x0, y0, x1, y1 } = location;
+          ctx.beginPath();
+          ctx.moveTo(x0, y0);
+          ctx.lineTo(x1, y1);
+          ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
+          ctx.lineWidth = thickness;
+          ctx.strokeStyle = color;
+          ctx.stroke();
+          ctx.closePath();
+        });
+
+        socket.on('canvas/reset', () => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE));
+
+        socket.on('canvas/update/response', (canvas: string) => {
+          const img = new Image();
+          img.onload = () => ctx.drawImage(img, 0, 0);
+          img.src = canvas;
+          socket.off('canvas/update/response');
+        });
+        socket.emit('canvas/update/request');
+      });
+    },
+  ],
+});
+
+const width = window.innerWidth;
+const defaultLeftSpace = width > 800 ? (width - 800) / 2 : width > 500 ? (width - 500) / 2 : 0;
+
+export const leftSpaceAtom = atom({
+  key: 'leftSpace',
+  default: defaultLeftSpace,
 });
 
 export const toolAtom = atom<'pencil' | 'eraser'>({

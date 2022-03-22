@@ -1,22 +1,31 @@
 import styled from 'styled-components';
 import { BsPalette } from 'react-icons/bs';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { colorAtom, contextAtom, isPaletteOnSelector, toggleCanvasModalAtom, toolAtom } from 'client/atom/canvasAtom';
+import { colorAtom, isPaletteOnSelector, toggleCanvasModalAtom, toolAtom } from 'client/atom/canvasAtom';
 import { COLOR } from 'shared/constant';
+import { isPortraitAtom } from 'client/atom/miscAtom';
 
 const OverflowWrapper = styled.div<{ isActivated: boolean }>`
   width: ${({ isActivated }) => `${isActivated ? 250 : 32}px`};
   border-radius: 10px;
   background-color: ${({ isActivated }) => `${isActivated ? '#e6ddc4' : '#dfd3c3'}`};
-  
+
   overflow: hidden;
-  
-  &:hover {
-    background-color: #e6ddc4;
-    filter: ${({ isActivated }) => `opacity(${isActivated ? 100 : 40}%)`};
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: #e6ddc4;
+      filter: ${({ isActivated }) => `opacity(${isActivated ? 100 : 40}%)`};
+    }
   }
 
   transition: width 0.8s, background-color 0.5s, filter 0.5s;
+`;
+const PortraitWrapper = styled.div`
+  width: 180px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
 `;
 const PaletteWrapper = styled.div<{ isActivated: boolean }>`
   position: relative;
@@ -32,14 +41,18 @@ const PaletteWrapper = styled.div<{ isActivated: boolean }>`
 
   cursor: ${({ isActivated }) => (isActivated ? 'default' : 'pointer')};
 `;
-const Color = styled.div<{ color: string }>`
+const Color = styled.div<{ color: string; isSelected: boolean }>`
   width: 16px;
   height: 16px;
   background-color: ${({ color }) => color};
   border-radius: 50%;
 
-  &:hover {
-    filter: opacity(40%);
+  filter: ${({ isSelected }) => `opacity(${isSelected ? 20 : 100}%)`};
+
+  @media (hover: hover) {
+    &:hover {
+      filter: opacity(40%);
+    }
   }
 
   transition: filter 0.25s;
@@ -48,28 +61,31 @@ const Color = styled.div<{ color: string }>`
 `;
 
 const Palette = () => {
-  const ctx = useRecoilValue(contextAtom);
   const setTool = useSetRecoilState(toolAtom);
   const toggle = useSetRecoilState(toggleCanvasModalAtom);
   const isActivated = useRecoilValue(isPaletteOnSelector);
   const [currentColor, setColor] = useRecoilState(colorAtom);
+  const isPortrait = useRecoilValue(isPortraitAtom);
 
-  return (
+  const colors = COLOR.map((color) => (
+    <Color
+      key={color}
+      color={color}
+      isSelected={color === currentColor}
+      onClick={() => {
+        setTool('pencil');
+        setColor(color);
+      }}
+    />
+  ));
+
+  return isPortrait ? (
+    <PortraitWrapper>{colors}</PortraitWrapper>
+  ) : (
     <OverflowWrapper isActivated={isActivated}>
       <PaletteWrapper isActivated={isActivated} onClick={() => toggle(1)}>
         <BsPalette fill={currentColor} />
-        {COLOR.map((color) => (
-          <Color
-            key={color}
-            color={color}
-            onClick={() => {
-              setTool('pencil');
-              setColor(color);
-              ctx.globalCompositeOperation = 'source-over';
-              ctx.strokeStyle = color;
-            }}
-          />
-        ))}
+        {colors}
       </PaletteWrapper>
     </OverflowWrapper>
   );

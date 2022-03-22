@@ -21,6 +21,11 @@ ul {
 input {
   outline: none;
 }
+body {
+  overscroll-behavior-y: contain;
+  display: flex;
+  justify-content: center;
+}
 `;
 
 export default GlobalStyle;

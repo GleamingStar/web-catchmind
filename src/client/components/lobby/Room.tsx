@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import socket from 'client/config/socket';
-import { BsFillPlayCircleFill, BsHourglassSplit } from 'react-icons/bs';
+import Waiting from 'client/components/common/Waiting';
+import Playing from 'client/components/common/Playing';
 import { MAX_USER_PER_ROOM } from 'shared/constant';
 import { TRoom } from 'shared/types';
 
@@ -19,8 +20,10 @@ const RoomWrapper = styled.div`
   justify-content: center;
   align-items: center;
 
-  &:hover {
-    filter: brightness(110%);
+  @media (hover: hover) {
+    &:hover {
+      filter: brightness(110%);
+    }
   }
 
   transition: filter 0.2s;
@@ -54,7 +57,7 @@ const Name = styled.div`
 const Room = ({ id, name, status, users }: TRoom) => (
   <RoomWrapper onClick={() => socket.emit('room/join', id)}>
     <Id>{`#${id}`}</Id>
-    <Status>{status === 'WAITING' ? <BsHourglassSplit size={18} /> : <BsFillPlayCircleFill size={17} />}</Status>
+    <Status>{status === 'WAITING' ? <Waiting size={18} color="596e79" /> : <Playing size={18} />}</Status>
     <People>{`${users.length} / ${MAX_USER_PER_ROOM}`}</People>
     <Name>{name}</Name>
   </RoomWrapper>

@@ -71,6 +71,7 @@ class GameManager {
     game.answer = this.setAnswer(game.usedAnswer);
     this.setTimer(id, 180);
     this.io.to(id.toString()).emit('game/set/start', game);
+    this.io.to(id.toString()).emit('canvas/reset');
   }
 
   setTimer(targetId: number, time: number) {
@@ -104,15 +105,17 @@ class GameManager {
     await delay(5000);
     this.startSet(targetId);
   }
-
+  
   leaveGame(targetId: number, userId: number) {
     const game = this.getGame(targetId);
     if (!game) return;
-
+    
     game.waitingUsers = game.waitingUsers.filter(({ id }) => id !== userId);
-
+    
     game.users = game.users.filter(({ id }) => id !== userId);
-
+    
+    this.io.to(targetId.toString()).emit('game/update', game);
+    
     if (game.users.length < 2) this.endGame(targetId, 'stop');
     else if (game.painter.id === userId && game.status === 'PLAYING') {
       chat.painterOut(this.io, targetId, game.answer);

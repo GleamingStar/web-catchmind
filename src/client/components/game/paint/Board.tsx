@@ -1,19 +1,21 @@
 import styled from 'styled-components';
-import { MouseEvent, MouseEventHandler, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
-import { colorAtom, contextAtom, cursorSelector, thicknessAtom, toolAtom } from 'client/atom/canvasAtom';
+import { colorAtom, contextAtom, cursorSelector, leftSpaceAtom, thicknessAtom, toolAtom } from 'client/atom/canvasAtom';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import { gameAtom, isPainterSelector } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import { CANVAS_SIZE } from 'shared/constant';
+
+const BORDER = 4;
 
 const BoardWrapper = styled.div`
   position: relative;
   width: 500px;
   height: 500px;
   background-color: #fff;
-  border: 4px #cdb699 solid;
+  border: ${BORDER}px #cdb699 solid;
 `;
 const Canvas = styled.canvas<{ cursor: string }>`
   cursor: url(${({ cursor }) => `"${cursor}"`}) 0 16, pointer;
@@ -42,6 +44,7 @@ const Board = () => {
 
   const [location, setLocation] = useState({ x0: 0, y0: 0 });
   const [ctx, setCtx] = useRecoilState(contextAtom);
+  const leftSpace = useRecoilValue(leftSpaceAtom);
   const [tool, setTool] = useRecoilState(toolAtom);
   const [thickness, setThickness] = useRecoilState(thicknessAtom);
   const [color, setColor] = useRecoilState(colorAtom);
@@ -53,20 +56,11 @@ const Board = () => {
     const canvas = canvasRef.current;
     const context = canvas.getContext('2d');
 
-    context.lineWidth = 2;
     context.lineCap = 'round';
     setTool('pencil');
     setThickness(2);
     setColor('black');
     setCtx(context);
-
-    socket.on('canvas/update/response', (canvas: string) => {
-      const img = new Image();
-      img.onload = () => context.drawImage(img, 0, 0);
-      img.src = canvas;
-      socket.off('canvas/update/response');
-    });
-    socket.emit('canvas/update/request');
   }, []);
 
   useEffect(() => {
@@ -84,46 +78,60 @@ const Board = () => {
     };
   }, [update]);
 
-  const mouseDownHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
-    if (!isValid) return;
-    const { offsetX, offsetY } = nativeEvent;
+  const down = (x0: number, y0: number) => {
     setDown(true);
-    ctx.beginPath();
-    ctx.moveTo(offsetX, offsetY);
-    setLocation({ x0: offsetX, y0: offsetY });
+    ctx.moveTo(x0, y0);
+    setLocation({ x0, y0 });
   };
 
-  const mouseMoveHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
-    if (!isValid || !isDown) return;
-    const { offsetX, offsetY } = nativeEvent;
-    ctx.moveTo(location.x0, location.y0);
-    ctx.lineTo(offsetX, offsetY);
-    ctx.stroke();
-    socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1: offsetX, y1: offsetY } });
+  const draw = useCallback(
+    (x: number, y1: number) => {
+      if (!isValid || !isDown) return;
+      const x1 = x - leftSpace;
+      ctx.beginPath();
+      ctx.moveTo(location.x0, location.y0);
+      ctx.lineTo(x1, y1);
+      ctx.globalCompositeOperation = tool === 'pencil' ? 'source-over' : 'destination-out';
+      ctx.strokeStyle = color;
+      ctx.lineWidth = thickness;
+      ctx.stroke();
+      ctx.closePath();
+      socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1, y1 } });
+      setLocation({ x0: x1, y0: y1 });
+    },
+    [ctx, isValid, leftSpace, isDown, tool, color, thickness, location]
+  );
 
-    setLocation({ x0: offsetX, y0: offsetY });
-  };
+  useEffect(() => {
+    const mouseMoveHandler = throttle(({ pageX, pageY }: MouseEvent) => draw(pageX - BORDER, pageY - BORDER), 10);
+    const touchMoveHandler = throttle(
+      ({ targetTouches }: TouchEvent) => draw(targetTouches[0].pageX - BORDER, targetTouches[0].pageY - BORDER),
+      10
+    );
+    const up = () => setDown(false);
 
-  const mouseUpHandler = ({ nativeEvent }: MouseEvent): MouseEventHandler => {
-    if (!isDown) return;
-    setDown(false);
-    if (!isValid) return;
-    const { offsetX, offsetY } = nativeEvent;
-    ctx.moveTo(location.x0, location.y0);
-    ctx.lineTo(offsetX, offsetY);
-    ctx.stroke();
-    socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1: offsetX, y1: offsetY } });
-  };
+    window.addEventListener('mousemove', mouseMoveHandler);
+    window.addEventListener('touchmove', touchMoveHandler);
+    window.addEventListener('mouseup', up);
+    window.addEventListener('touchend', up);
+
+    return () => {
+      window.removeEventListener('mousemove', mouseMoveHandler);
+      window.removeEventListener('touchmove', touchMoveHandler);
+      window.removeEventListener('mouseup', up);
+      window.removeEventListener('touchend', up);
+    };
+  }, [draw]);
 
   return (
     <BoardWrapper>
       <Canvas
         width={CANVAS_SIZE}
         height={CANVAS_SIZE}
-        onMouseMove={throttle(mouseMoveHandler, 10)}
-        onMouseDown={mouseDownHandler}
-        onMouseUp={mouseUpHandler}
-        onMouseLeave={mouseUpHandler}
+        onMouseDown={({ nativeEvent }: React.MouseEvent) => isValid && down(nativeEvent.offsetX, nativeEvent.offsetY)}
+        onTouchStart={({ targetTouches }: React.TouchEvent) =>
+          isValid && down(targetTouches[0].pageX - BORDER, targetTouches[0].pageY - BORDER)
+        }
         cursor={cursor}
         ref={canvasRef}
       />
