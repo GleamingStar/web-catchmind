@@ -45,11 +45,6 @@ const Main = () => {
   const setLeftSpace = useSetRecoilState(leftSpaceAtom);
 
   useEffect(() => {
-    window.innerWidth < 500 &&
-      document
-        .getElementsByName('viewport')[0]
-        .setAttribute('content', `width=device-width, initial-scale=${window.innerWidth / 500}`);
-
     let timer;
 
     const resizeHandler = throttle(() => {
