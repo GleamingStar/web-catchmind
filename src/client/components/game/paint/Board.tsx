@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
-import { colorAtom, contextAtom, cursorSelector, thicknessAtom, toolAtom } from 'client/atom/canvasAtom';
+import { colorAtom, contextAtom, cursorSelector, leftSpaceAtom, thicknessAtom, toolAtom } from 'client/atom/canvasAtom';
 import { currentRoomSelector } from 'client/atom/roomAtom';
 import { gameAtom, isPainterSelector } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
@@ -44,6 +44,7 @@ const Board = () => {
 
   const [location, setLocation] = useState({ x0: 0, y0: 0 });
   const [ctx, setCtx] = useRecoilState(contextAtom);
+  const leftSpace = useRecoilValue(leftSpaceAtom);
   const [tool, setTool] = useRecoilState(toolAtom);
   const [thickness, setThickness] = useRecoilState(thicknessAtom);
   const [color, setColor] = useRecoilState(colorAtom);
@@ -84,8 +85,9 @@ const Board = () => {
   };
 
   const draw = useCallback(
-    (x1: number, y1: number) => {
+    (x: number, y1: number) => {
       if (!isValid || !isDown) return;
+      const x1 = x - leftSpace;
       ctx.beginPath();
       ctx.moveTo(location.x0, location.y0);
       ctx.lineTo(x1, y1);
@@ -97,7 +99,7 @@ const Board = () => {
       socket.emit('canvas/draw', { tool, color, thickness, location: { ...location, x1, y1 } });
       setLocation({ x0: x1, y0: y1 });
     },
-    [ctx, isValid, isDown, tool, color, thickness, location]
+    [ctx, isValid, leftSpace, isDown, tool, color, thickness, location]
   );
 
   useEffect(() => {

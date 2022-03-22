@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { lazy, Suspense, useEffect } from 'react';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
+import { leftSpaceAtom } from 'client/atom/canvasAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
 import Entrance from './entrance/Entrance';
 const Lobby = lazy(() => import('./lobby/Lobby'));
@@ -41,6 +42,7 @@ const throttle = (callback, delay) => {
 const Main = () => {
   const isLogined = useRecoilValue(accountAtom) !== null;
   const isInRoom = useRecoilValue(currentRoomIndexAtom) !== null;
+  const setLeftSpace = useSetRecoilState(leftSpaceAtom);
 
   useEffect(() => {
     window.innerWidth < 500 &&
@@ -48,10 +50,18 @@ const Main = () => {
         .getElementsByName('viewport')[0]
         .setAttribute('content', `width=device-width, initial-scale=${window.innerWidth / 500}`);
 
-    const resizeHandler = throttle(
-      () => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`),
-      100
-    );
+    let timer;
+
+    const resizeHandler = throttle(() => {
+      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
+      clearTimeout(timer);
+      timer = setTimeout(() => {
+        const width = window.innerWidth;
+        if (width > 800) setLeftSpace((width - 800) / 2);
+        else if (width > 500) setLeftSpace((width - 500) / 2);
+      }, 250);
+    }, 100);
+
     window.addEventListener('resize', resizeHandler);
 
     return () => {

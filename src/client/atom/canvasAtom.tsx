@@ -39,6 +39,14 @@ export const contextAtom = atom<CanvasRenderingContext2D>({
   ],
 });
 
+const width = window.innerWidth;
+const defaultLeftSpace = width > 800 ? (width - 800) / 2 : width > 500 ? (width - 500) / 2 : 0;
+
+export const leftSpaceAtom = atom({
+  key: 'leftSpace',
+  default: defaultLeftSpace,
+});
+
 export const toolAtom = atom<'pencil' | 'eraser'>({
   key: 'tool',
   default: 'pencil',
