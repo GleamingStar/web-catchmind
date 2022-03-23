@@ -10,8 +10,11 @@ const ContainerWrapper = styled.div`
   width: 300px;
   height: 460px;
   @media screen and (max-width: 800px) {
+    position: fixed;
+    bottom: 60px;
+    right: calc(50% - 250px);
     height: calc(100% - 560px);
-    min-height: 140px;
+    min-height: 90px;
   }
   background-color: #fbf8f1;
   display: flex;
@@ -37,7 +40,7 @@ const Container = () => {
     };
 
     window.addEventListener('resize', scroll);
-    
+
     return () => {
       window.removeEventListener('resize', scroll);
     };
