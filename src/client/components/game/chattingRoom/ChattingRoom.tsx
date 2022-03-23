@@ -8,12 +8,14 @@ const ChattingRoomWrapper = styled.div`
   right: 0;
   height: 100%;
 
-  @media screen and (max-width: 800px) {
-    top: 500px;
+  @media screen and (max-width: 800px) and (max-height: 645px) {
+    opacity: 0.5;
   }
 
   display: flex;
   flex-direction: column;
+
+  transition: opacity 0.5s;
 `;
 
 const ChattingRoom = () => (

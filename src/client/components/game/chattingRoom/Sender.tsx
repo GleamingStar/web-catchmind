@@ -7,6 +7,13 @@ const SenderWrapper = styled.div`
   position: relative;
   width: 300px;
   height: 60px;
+
+  @media screen and (max-width: 800px) {
+    position: fixed;
+    bottom: 0;
+    right: calc(50% - 250px);
+  }
+
   background-color: #f7ecde;
   display: flex;
   justify-content: center;
@@ -57,7 +64,6 @@ const Sender = () => {
         onKeyPress={inputKeyPressHandler}
         onChange={inputChangeHandler}
         placeholder="메세지 보내기"
-        autoFocus={true}
         spellCheck={false}
       />
       <SenderButton onClick={sendMessage}>

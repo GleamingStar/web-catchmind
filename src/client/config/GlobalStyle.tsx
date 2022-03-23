@@ -22,6 +22,9 @@ input {
   outline: none;
 }
 body {
+  position: fixed;
+  width: 100%;
+
   overscroll-behavior-y: contain;
   display: flex;
   justify-content: center;
