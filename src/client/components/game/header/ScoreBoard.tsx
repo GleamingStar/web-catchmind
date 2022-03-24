@@ -21,6 +21,7 @@ const ScoreBoardWrapper = styled.div<{ isActivated: boolean }>`
     transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '-200px'})`};
     height: calc(100vh - 580px);
     min-height: 120px;
+    max-height: none;
   }
 
   border: 3px solid #cdb699;
