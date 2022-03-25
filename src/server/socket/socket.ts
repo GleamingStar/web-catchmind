@@ -21,7 +21,7 @@ const setSocket = (server: ReturnType<typeof createServer>) => {
       chat.chat(io, roomId, user.name, user.imgUrl, message);
     });
 
-    setUserEvent(socket);
+    setUserEvent(io, socket);
 
     setGameEvent(socket, gameManager);
 

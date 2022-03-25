@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import RoomList from './RoomList';
+import UserCount from './UserCount';
 
 const LobbyWrapper = styled.div`
   position: relative;
@@ -8,6 +9,7 @@ const LobbyWrapper = styled.div`
 
 const Lobby = () => (
   <LobbyWrapper>
+    <UserCount />
     <RoomList />
   </LobbyWrapper>
 );

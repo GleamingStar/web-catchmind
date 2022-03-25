@@ -32,6 +32,21 @@ export const roomAlertAtom = atom({
   ],
 });
 
+export const userCountAtom = atom({
+  key: 'userCount',
+  default: 0,
+  effects: [
+    ({ setSelf }) => {
+      socket.on('usercount', setSelf);
+      socket.emit('usercount')
+
+      return () => {
+        socket.off('usercount', setSelf);
+      };
+    },
+  ],
+});
+
 export const disconnectAlertAtom = atom({
   key: 'disconnectAlert',
   default: false,
