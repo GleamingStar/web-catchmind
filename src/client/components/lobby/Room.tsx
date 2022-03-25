@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { BsPeopleFill } from 'react-icons/bs';
 import socket from 'client/config/socket';
 import Waiting from 'client/components/common/Waiting';
 import Playing from 'client/components/common/Playing';
@@ -44,13 +45,20 @@ const People = styled.div`
   position: absolute;
   top: 5px;
   right: 20px;
+  display: flex;
+`;
+const PeopleIcon = styled.div`
+  transform: translateY(1px);
+`;
+const PeopleCount = styled.div`
+  margin-left: 8px;
 `;
 const Name = styled.div`
   position: absolute;
   bottom: 8px;
   right: 15px;
 
-  font-size: 20px;
+  font-size: 21px;
   font-weight: 600;
 `;
 
@@ -58,7 +66,12 @@ const Room = ({ id, name, status, users }: TRoom) => (
   <RoomWrapper onClick={() => socket.emit('room/join', id)}>
     <Id>{`#${id}`}</Id>
     <Status>{status === 'WAITING' ? <Waiting size={18} color="596e79" /> : <Playing size={18} />}</Status>
-    <People>{`${users.length} / ${MAX_USER_PER_ROOM}`}</People>
+    <People>
+      <PeopleIcon>
+        <BsPeopleFill size={16} />
+      </PeopleIcon>
+      <PeopleCount>{`${users.length} / ${MAX_USER_PER_ROOM}`}</PeopleCount>
+    </People>
     <Name>{name}</Name>
   </RoomWrapper>
 );
