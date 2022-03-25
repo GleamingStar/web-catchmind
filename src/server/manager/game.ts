@@ -105,17 +105,17 @@ class GameManager {
     await delay(5000);
     this.startSet(targetId);
   }
-  
+
   leaveGame(targetId: number, userId: number) {
     const game = this.getGame(targetId);
     if (!game) return;
-    
+
     game.waitingUsers = game.waitingUsers.filter(({ id }) => id !== userId);
-    
+
     game.users = game.users.filter(({ id }) => id !== userId);
-    
+
     this.io.to(targetId.toString()).emit('game/update', game);
-    
+
     if (game.users.length < 2) this.endGame(targetId, 'stop');
     else if (game.painter.id === userId && game.status === 'PLAYING') {
       chat.painterOut(this.io, targetId, game.answer);
@@ -126,6 +126,7 @@ class GameManager {
   endGame(targetId: number, type: 'over' | 'stop') {
     clearTimeout(this.timer[targetId]);
 
+    this.io.to(targetId.toString()).emit('game/result', this.getGame(targetId).score);
     this.io.to(targetId.toString()).emit('game/end');
     type === 'over' ? chat.end(this.io, targetId) : chat.stop(this.io, targetId);
 

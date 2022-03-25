@@ -58,3 +58,43 @@ export const isPainterSelector = selector({
   key: 'isPainter',
   get: ({ get }) => (get(accountAtom)?.id === get(gameAtom)?.painter.id) === (get(gameAtom) !== null),
 });
+
+export const resultAtom = atom<TGame['score']>({
+  key: 'result',
+  default: [],
+  effects: [
+    ({ setSelf }) => {
+      socket.on('game/result', setSelf);
+
+      return () => {
+        socket.off('game/result', setSelf);
+      };
+    },
+  ],
+});
+
+export const isEndAtom = atom({
+  key: 'isEnd',
+  default: false,
+  effects: [
+    ({ setSelf, resetSelf }) => {
+      const RESET_TIMER = 5000;
+
+      let timer;
+
+      const endHandler = () => {
+        clearTimeout(timer);
+        setSelf(true);
+        timer = setTimeout(resetSelf, RESET_TIMER);
+      };
+
+      socket.on('game/end', endHandler);
+      socket.on('game/start', resetSelf);
+
+      return () => {
+        socket.off('game/end', endHandler);
+        socket.off('game/start', resetSelf);
+      };
+    },
+  ],
+});

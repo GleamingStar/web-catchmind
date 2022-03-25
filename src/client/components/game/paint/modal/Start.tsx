@@ -15,9 +15,10 @@ const StartWrapper = styled.div<{ isActivated: boolean }>`
   border-radius: 10px;
   background-color: #fbf8f134;
   backdrop-filter: blur(4px);
+  box-shadow: 3px 3px 4px #bbb;
 
   transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '170px'})`};
-  transition: transform 0.4s;
+  transition: transform 0.4s ease-out;
 `;
 
 const Start = () => {
