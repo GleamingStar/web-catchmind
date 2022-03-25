@@ -89,11 +89,13 @@ export const isEndAtom = atom({
       };
 
       socket.on('game/end', endHandler);
-      socket.on('game/start', resetSelf);
-
+      socket.on('room/leave', resetSelf)
+      socket.on('game/set/start', resetSelf);
+      
       return () => {
         socket.off('game/end', endHandler);
-        socket.off('game/start', resetSelf);
+        socket.off('room/leave', resetSelf)
+        socket.off('game/set/start', resetSelf);
       };
     },
   ],
