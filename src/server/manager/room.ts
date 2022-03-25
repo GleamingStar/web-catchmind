@@ -1,5 +1,6 @@
 import { Server } from 'socket.io';
 import chat from 'server/socket/chat';
+import { MAX_USER_PER_ROOM } from 'shared/constant';
 import { TRoom, TUser } from 'shared/types';
 
 class RoomManager {
@@ -32,7 +33,9 @@ class RoomManager {
   }
 
   joinRoom(targetId: number, user: TUser) {
-    this.getRoom(targetId).users.push(user);
+    const users = this.getRoom(targetId).users;
+    if (users.length >= MAX_USER_PER_ROOM) return;
+    users.push(user);
     chat.enter(this.io, targetId, user.name);
     this.update();
   }

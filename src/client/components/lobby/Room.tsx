@@ -6,7 +6,7 @@ import Playing from 'client/components/common/Playing';
 import { MAX_USER_PER_ROOM } from 'shared/constant';
 import { TRoom } from 'shared/types';
 
-const RoomWrapper = styled.div`
+const RoomWrapper = styled.div<{ isFull: boolean }>`
   position: relative;
   min-height: 60px;
   width: 280px;
@@ -29,7 +29,7 @@ const RoomWrapper = styled.div`
 
   transition: filter 0.2s;
 
-  cursor: pointer;
+  cursor: ${({ isFull }) => (isFull ? 'not-allowed' : 'pointer')};
 `;
 const Id = styled.div`
   position: absolute;
@@ -62,18 +62,21 @@ const Name = styled.div`
   font-weight: 600;
 `;
 
-const Room = ({ id, name, status, users }: TRoom) => (
-  <RoomWrapper onClick={() => socket.emit('room/join', id)}>
-    <Id>{`#${id}`}</Id>
-    <Status>{status === 'WAITING' ? <Waiting size={18} color="596e79" /> : <Playing size={18} />}</Status>
-    <People>
-      <PeopleIcon>
-        <BsPeopleFill size={16} />
-      </PeopleIcon>
-      <PeopleCount>{`${users.length} / ${MAX_USER_PER_ROOM}`}</PeopleCount>
-    </People>
-    <Name>{name}</Name>
-  </RoomWrapper>
-);
+const Room = ({ id, name, status, users }: TRoom) => {
+  const isFull = users.length === MAX_USER_PER_ROOM;
+  return (
+    <RoomWrapper isFull={isFull} onClick={() => !isFull && socket.emit('room/join', id)}>
+      <Id>{`#${id}`}</Id>
+      <Status>{status === 'WAITING' ? <Waiting size={18} color="596e79" /> : <Playing size={18} />}</Status>
+      <People>
+        <PeopleIcon>
+          <BsPeopleFill size={16} />
+        </PeopleIcon>
+        <PeopleCount>{`${users.length} / ${MAX_USER_PER_ROOM}`}</PeopleCount>
+      </People>
+      <Name>{name}</Name>
+    </RoomWrapper>
+  );
+};
 
 export default Room;
