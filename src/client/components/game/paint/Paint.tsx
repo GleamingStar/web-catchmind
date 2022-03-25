@@ -6,6 +6,7 @@ import Answer from './modal/Answer';
 import Start from './modal/Start';
 import TimeBar from './modal/TimeBar';
 import Alert from './modal/Alert';
+import Result from './modal/Result';
 
 const PaintWrapper = styled.div`
   position: relative;
@@ -28,6 +29,7 @@ const Paint = () => {
       <Timer />
       <Alert />
       <Start />
+      <Result />
     </PaintWrapper>
   );
 };
