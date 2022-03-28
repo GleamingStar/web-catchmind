@@ -26,7 +26,6 @@
 - [ ] 문제 목록 추가
 - [ ] [`<Entrance />`](https://github.com/GleamingStar/web-catchmind/issues/13) 기능 및 디자인 개선
 - [ ] [`<Lobby />`](https://github.com/GleamingStar/web-catchmind/issues/11) 디자인 개선
-- [ ] [`<Game />`](https://github.com/GleamingStar/web-catchmind/issues/17) 기능 및 디자인 개선
 - [ ] [최적화](https://github.com/GleamingStar/web-catchmind/issues/15)
 - [ ] 리팩토링
 - [ ] README 개선
