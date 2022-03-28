@@ -2,10 +2,9 @@ import styled from 'styled-components';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsArrowCounterclockwise, BsEraser, BsPencil } from 'react-icons/bs';
 import { isPainterSelector } from 'client/atom/gameAtom';
-import { contextAtom, toolAtom } from 'client/atom/canvasAtom';
+import { toolAtom } from 'client/atom/canvasAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 import socket from 'client/config/socket';
-import { CANVAS_SIZE } from 'shared/constant';
 import Thickness from './Thickness';
 import Palette from './Palette';
 
@@ -58,16 +57,9 @@ const IconWrapper = styled.div`
 `;
 
 const Tool = () => {
-  const ctx = useRecoilValue(contextAtom);
   const setTool = useSetRecoilState(toolAtom);
   const isPainter = useRecoilValue(isPainterSelector);
   const isPortrait = useRecoilValue(isPortraitAtom);
-
-  const clickResetHandler = () => {
-    if (!isPainter) return;
-    ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
-    socket.emit('canvas/reset');
-  };
 
   const tool = (
     <>
@@ -77,7 +69,7 @@ const Tool = () => {
       <IconWrapper onClick={() => setTool('eraser')}>
         <BsEraser />
       </IconWrapper>
-      <IconWrapper onClick={clickResetHandler}>
+      <IconWrapper onClick={() => isPainter && socket.emit('canvas/reset')}>
         <BsArrowCounterclockwise />
       </IconWrapper>
     </>

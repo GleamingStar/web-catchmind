@@ -1,7 +1,7 @@
-import { Socket } from 'socket.io';
+import { Server, Socket } from 'socket.io';
 import { TCanvas } from 'shared/types';
 
-const setCanvasEvent = (socket: Socket) => {
+const setCanvasEvent = (io: Server, socket: Socket) => {
   socket.on('canvas/draw', (canvas: TCanvas) => {
     socket.broadcast.to(socket.handshake.auth.roomId?.toString()).emit('canvas/draw', canvas);
   });
@@ -14,7 +14,7 @@ const setCanvasEvent = (socket: Socket) => {
     socket.broadcast.to(socket.handshake.auth.roomId?.toString()).emit('canvas/update/response', canvasUrl)
   );
 
-  socket.on('canvas/reset', () => socket.broadcast.to(socket.handshake.auth.roomId?.toString()).emit('canvas/reset'));
+  socket.on('canvas/reset', () => io.to(socket.handshake.auth.roomId?.toString()).emit('canvas/reset'));
 };
 
 export default setCanvasEvent;

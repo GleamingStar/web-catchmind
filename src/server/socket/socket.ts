@@ -27,7 +27,7 @@ const setSocket = (server: ReturnType<typeof createServer>) => {
 
     setRoomEvent(socket, roomManager);
 
-    setCanvasEvent(socket);
+    setCanvasEvent(io, socket);
   });
 
   return io;

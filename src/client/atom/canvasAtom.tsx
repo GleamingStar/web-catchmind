@@ -3,6 +3,8 @@ import socket from 'client/config/socket';
 import { CANVAS_SIZE } from 'shared/constant';
 import { TCanvas, TColor } from 'shared/types';
 
+const isMobileChrome = /Chrome/g.test(navigator.userAgent) && /Mobile Safari/g.test(navigator.userAgent);
+
 export const contextAtom = atom<CanvasRenderingContext2D>({
   key: 'canvasContext',
   default: null,
@@ -25,7 +27,21 @@ export const contextAtom = atom<CanvasRenderingContext2D>({
           ctx.closePath();
         });
 
-        socket.on('canvas/reset', () => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE));
+        const reset = () => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
+
+        const MobileChromeReset = () => {
+          reset();
+          ctx.beginPath();
+          ctx.moveTo(0, 0);
+          ctx.lineTo(0, 0);
+          ctx.globalCompositeOperation = 'destination-out';
+          ctx.stroke();
+          ctx.closePath();
+        };
+
+        const resetHandler = isMobileChrome ? MobileChromeReset : reset;
+
+        socket.on('canvas/reset', resetHandler);
 
         socket.on('canvas/update/response', (canvas: string) => {
           const img = new Image();
