@@ -1,10 +1,12 @@
 import styled from 'styled-components';
 import { ChangeEvent, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { BsFillPersonPlusFill, BsGithub } from 'react-icons/bs';
-import { disconnectAlertAtom, loginAlertAtom } from 'client/atom/miscAtom';
+import { loginAlertAtom } from 'client/atom/miscAtom';
 import socket from 'client/config/socket';
 import { LOGIN_ALERT_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
+import DisconnectAlert from './alert/DisconnectAlert';
+import ZoomOutAlert from './alert/ZoomOutAlert';
 
 const EntranceWrapper = styled.div`
   display: flex;
@@ -78,25 +80,6 @@ const GitHubButton = styled.div`
 
   cursor: pointer;
 `;
-const DisconnectAlertWrapper = styled.div<{ isActivated: boolean }>`
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  padding: 10px;
-  border-radius: 12px;
-  border: solid 2px #cdb699;
-  transform: ${({ isActivated }) => `translate(-50%,${isActivated ? 0 : -140}px)`};
-  white-space: pre-line;
-
-  transition: 1s;
-`;
-const DisconnectAlertParagraph = styled.div`
-  color: #596e79;
-  white-space: nowrap;
-  & + & {
-    margin-top: 5px;
-  }
-`;
 
 const Entrance = () => {
   const [inputValue, setInputValue] = useState('');
@@ -137,22 +120,11 @@ const Entrance = () => {
       </Login>
       <LoginAlert>{alert}</LoginAlert>
       <DisconnectAlert />
+      <ZoomOutAlert />
       <GitHubButton>
         <BsGithub size={30} onClick={() => window.open('https://github.com/GleamingStar/web-catchmind')} />
       </GitHubButton>
     </EntranceWrapper>
-  );
-};
-
-const DisconnectAlert = () => {
-  const isDisconnected = useRecoilValue(disconnectAlertAtom);
-
-  return (
-    <DisconnectAlertWrapper isActivated={isDisconnected}>
-      <DisconnectAlertParagraph>소켓 연결이 종료되었습니다.</DisconnectAlertParagraph>
-      <DisconnectAlertParagraph>네트워크 이상 혹은 업데이트를 위한 서버종료일 수 있습니다.</DisconnectAlertParagraph>
-      <DisconnectAlertParagraph>문제가 지속될 시 우측하단 깃허브로 제보해주세요.</DisconnectAlertParagraph>
-    </DisconnectAlertWrapper>
   );
 };
 

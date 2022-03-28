@@ -32,6 +32,21 @@ export const roomAlertAtom = atom({
   ],
 });
 
+export const userCountAtom = atom({
+  key: 'userCount',
+  default: 0,
+  effects: [
+    ({ setSelf }) => {
+      socket.on('usercount', setSelf);
+      socket.emit('usercount');
+
+      return () => {
+        socket.off('usercount', setSelf);
+      };
+    },
+  ],
+});
+
 export const disconnectAlertAtom = atom({
   key: 'disconnectAlert',
   default: false,
@@ -50,25 +65,79 @@ export const disconnectAlertAtom = atom({
   ],
 });
 
-const throttle = (callback, delay) => {
-  let previousCall = new Date().getTime();
+export const zoomOutAlertAtom = atom({
+  key: 'zoomOutAlert',
+  default: visualViewport.width < 499,
+  effects: [
+    ({ setSelf }) => {
+      const evCache: Array<PointerEvent> = [];
+      let prevDiff = -1;
 
-  return (...args) => {
-    const time = new Date().getTime();
+      const donwHandler = (e: PointerEvent) => evCache.push(e);
 
-    if (time - previousCall >= delay) {
-      previousCall = time;
-      callback(...args);
-    }
-  };
-};
+      const moveHandler = (e: PointerEvent) => {
+        for (let i = 0; i < evCache.length; i++) {
+          if (e.pointerId == evCache[i].pointerId) {
+            evCache[i] = e;
+            break;
+          }
+        }
+
+        if (evCache.length == 2) {
+          const curDiff = Math.abs(evCache[0].clientX - evCache[1].clientX);
+
+          if (prevDiff > 0 && curDiff < prevDiff) {
+            setSelf(false);
+            cancel();
+          }
+
+          prevDiff = curDiff;
+        }
+      };
+
+      const resetHandler = ({ pointerId }: PointerEvent) => {
+        for (let i = 0; i < evCache.length; i++) {
+          if (evCache[i].pointerId == pointerId) {
+            evCache.splice(i, 1);
+            break;
+          }
+        }
+        if (evCache.length < 2) prevDiff = -1;
+      };
+
+      const cancel = () => {
+        window.removeEventListener('pointerdown', donwHandler);
+        window.removeEventListener('pointermove', moveHandler);
+        window.removeEventListener('pointerup', resetHandler);
+        window.removeEventListener('pointercancel', resetHandler);
+        window.removeEventListener('pointerout', resetHandler);
+        window.removeEventListener('pointerleave', resetHandler);
+      };
+
+      window.addEventListener('pointerdown', donwHandler);
+      window.addEventListener('pointermove', moveHandler);
+      window.addEventListener('pointerup', resetHandler);
+      window.addEventListener('pointercancel', resetHandler);
+      window.addEventListener('pointerout', resetHandler);
+      window.addEventListener('pointerleave', resetHandler);
+
+      return () => {
+        cancel();
+      };
+    },
+  ],
+});
 
 export const isPortraitAtom = atom({
   key: 'isPortrait',
   default: window.innerWidth < 800,
   effects: [
     ({ setSelf }) => {
-      const resizeHandler = throttle(() => setSelf(window.innerWidth < 800), 100);
+      let timer;
+      const resizeHandler = () => {
+        clearTimeout(timer);
+        timer = setTimeout(() => setSelf(window.innerWidth < 800), 100);
+      };
       window.addEventListener('resize', resizeHandler);
 
       return () => {

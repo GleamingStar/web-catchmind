@@ -9,9 +9,12 @@ const ContainerWrapper = styled.div`
   padding: 10px;
   width: 300px;
   height: 460px;
-  @media screen and (max-width:800px) {
+  @media screen and (max-width: 800px) {
+    position: fixed;
+    bottom: 60px;
+    right: calc(50% - 250px);
     height: calc(100% - 560px);
-    min-height: 140px;
+    min-height: 90px;
   }
   background-color: #fbf8f1;
   display: flex;
@@ -29,6 +32,19 @@ const Container = () => {
   const chatLog = useRecoilValue(chatLogAtom);
 
   const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const scroll: EventListener = () => {
+      if (window.innerHeight > 700) return;
+      containerRef.current.scrollTo({ top: containerRef.current.scrollHeight, behavior: 'auto' });
+    };
+
+    window.addEventListener('resize', scroll);
+
+    return () => {
+      window.removeEventListener('resize', scroll);
+    };
+  }, []);
 
   useEffect(() => {
     const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
