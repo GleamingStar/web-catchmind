@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useEffect } from 'react';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { BsArrowCounterclockwise, BsEraser, BsPencil } from 'react-icons/bs';
 import { isPainterSelector } from 'client/atom/gameAtom';
 import { toolAtom } from 'client/atom/canvasAtom';
@@ -59,7 +60,11 @@ const IconWrapper = styled.div`
 const Tool = () => {
   const setTool = useSetRecoilState(toolAtom);
   const isPainter = useRecoilValue(isPainterSelector);
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const [isPortrait, setPortrait] = useRecoilState(isPortraitAtom);
+
+  useEffect(() => {
+    setPortrait(window.innerWidth < 800);
+  }, []);
 
   const tool = (
     <>
