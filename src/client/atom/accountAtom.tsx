@@ -1,6 +1,23 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 import socket from 'client/config/socket';
+import { makeHash } from 'client/config/util';
+import { PROFILE_IMAGE_SIZE } from 'shared/constant';
 import { TUser } from 'shared/types';
+
+export const userNameAtom = atom({
+  key: 'userName',
+  default: '',
+});
+
+export const imageUrlAtom = atom({
+  key: 'imageUrl',
+  default: makeHash(32),
+});
+
+export const userImageSelector = selector({
+  key: 'userImage',
+  get: ({ get }) => `http://gravatar.com/avatar/${get(imageUrlAtom)}?d=identicon&s=${PROFILE_IMAGE_SIZE}`,
+});
 
 export const accountAtom = atom<TUser>({
   key: 'account',
@@ -8,11 +25,11 @@ export const accountAtom = atom<TUser>({
   effects: [
     ({ setSelf, resetSelf }) => {
       socket.on('login/success', setSelf);
-      socket.on('disconnect', resetSelf)
-      
+      socket.on('disconnect', resetSelf);
+
       return () => {
         socket.off('login/success', setSelf);
-        socket.off('disconnect', resetSelf)
+        socket.off('disconnect', resetSelf);
       };
     },
   ],
