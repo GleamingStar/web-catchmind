@@ -17,9 +17,11 @@ const BoardWrapper = styled.div`
   background-color: #fff;
   border: ${BORDER}px #cdb699 solid;
 `;
-const Canvas = styled.canvas<{ cursor: string }>`
-  cursor: url(${({ cursor }) => `"${cursor}"`}) 0 16, pointer;
-`;
+const Canvas = styled.canvas.attrs(({ cursor }: { cursor: string }) => ({
+  style: {
+    cursor: `url("${cursor}") 0 16, pointer`,
+  },
+}))<{ cursor: string }>``;
 
 const throttle = (callback, delay) => {
   let previousCall = new Date().getTime();
@@ -59,7 +61,7 @@ const Board = () => {
     context.lineCap = 'round';
     setTool('pencil');
     setThickness(2);
-    setColor('black');
+    setColor('#000000');
     setCtx(context);
   }, []);
 
