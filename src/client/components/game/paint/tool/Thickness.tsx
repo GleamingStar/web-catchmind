@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
-import { BsBorderWidth } from 'react-icons/bs';
 import { isThicknessOnSelector, thicknessAtom, toggleCanvasModalAtom } from 'client/atom/canvasAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 
@@ -79,7 +78,7 @@ const Thickness = () => {
   ) : (
     <OverflowWrapper isActivated={isActivated}>
       <ThicknessWrapper isActivated={isActivated} onClick={() => toggle(0)}>
-        <BsBorderWidth />
+        <Border />
         {lines}
       </ThicknessWrapper>
     </OverflowWrapper>
@@ -95,5 +94,18 @@ const Line = ({ height }: { height: number }) => {
     </LineWrapper>
   );
 };
+
+const Border = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill="currentColor"
+    className="bi bi-border-width"
+    viewBox="0 0 16 16"
+  >
+    <path d="M0 3.5A.5.5 0 0 1 .5 3h15a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-2zm0 5A.5.5 0 0 1 .5 8h15a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5H.5a.5.5 0 0 1-.5-.5v-1zm0 4a.5.5 0 0 1 .5-.5h15a.5.5 0 0 1 0 1H.5a.5.5 0 0 1-.5-.5z" />
+  </svg>
+);
 
 export default Thickness;

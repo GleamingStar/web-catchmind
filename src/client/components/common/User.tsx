@@ -21,7 +21,7 @@ const UserName = styled.div`
 
 const User = ({ name, imgUrl }: { name: string; imgUrl: string }) => (
   <UserWrapper>
-    <UserImg src={imgUrl} />
+    <UserImg src={imgUrl} alt="user profile image" />
     <UserName>{name}</UserName>
   </UserWrapper>
 );
