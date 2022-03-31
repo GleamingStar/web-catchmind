@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { ChangeEvent } from 'react';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { BsFillPersonPlusFill, BsGithub } from 'react-icons/bs';
-import { userNameAtom } from 'client/atom/accountAtom';
+import { userImageSelector, userNameAtom } from 'client/atom/accountAtom';
 import { loginAlertAtom } from 'client/atom/miscAtom';
 import socket from 'client/config/socket';
 import { LOGIN_ALERT_MESSAGE, MAX_USER_NAME_LENGTH } from 'shared/constant';
@@ -85,6 +85,7 @@ const GitHubButton = styled.div`
 
 const Entrance = () => {
   const [inputValue, setInputValue] = useRecoilState(userNameAtom);
+  const userImage = useRecoilValue(userImageSelector);
   const [alert, setAlert] = useRecoilState(loginAlertAtom);
 
   const inputChangeHandler = ({ target }: ChangeEvent<HTMLInputElement>) => setInputValue(target.value);
@@ -102,7 +103,7 @@ const Entrance = () => {
     return true;
   };
 
-  const login = () => isValid() && socket.emit('login', inputValue.trim());
+  const login = () => isValid() && socket.emit('login', inputValue.trim(), userImage);
 
   return (
     <EntranceWrapper>
