@@ -1,8 +1,8 @@
 import { atom, selector } from 'recoil';
 import socket from 'client/config/socket';
-import { makeHash } from 'client/config/util';
 import { PROFILE_IMAGE_SIZE } from 'shared/constant';
 import { TUser } from 'shared/types';
+import { makeHash } from 'shared/util';
 
 export const userNameAtom = atom({
   key: 'userName',

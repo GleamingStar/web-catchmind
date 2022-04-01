@@ -3,6 +3,7 @@ import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import { colorAtom, isPaletteOnSelector, toggleCanvasModalAtom, toolAtom } from 'client/atom/canvasAtom';
 import { COLOR } from 'shared/constant';
 import { isPortraitAtom } from 'client/atom/miscAtom';
+import ColorSelector from './ColorSelector';
 
 const OverflowWrapper = styled.div<{ isActivated: boolean }>`
   width: ${({ isActivated }) => `${isActivated ? 250 : 32}px`};
@@ -85,10 +86,12 @@ const Palette = () => {
       <PaletteWrapper isActivated={isActivated} onClick={() => toggle(1)}>
         <PaletteIcon color={currentColor} />
         {colors}
+        <ColorSelector />
       </PaletteWrapper>
     </OverflowWrapper>
   );
 };
+
 
 const PaletteIcon = ({ color }: { color: string }) => (
   <svg

@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 import Board from './Board';
 import Tool from './tool/Tool';
 import Timer from './modal/Timer';
@@ -12,7 +13,7 @@ const PaintWrapper = styled.div`
   position: relative;
   width: 500px;
   height: 600px;
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     height: 100%;
     min-height: 700px;
   }

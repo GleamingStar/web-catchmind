@@ -5,8 +5,10 @@ import { isPainterSelector } from 'client/atom/gameAtom';
 import { toolAtom } from 'client/atom/canvasAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 import socket from 'client/config/socket';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 import Thickness from './Thickness';
 import Palette from './Palette';
+import ColorSelector from './ColorSelector';
 
 const ToolWrapper = styled.div`
   position: absolute;
@@ -21,7 +23,7 @@ const ToolWrapper = styled.div`
   justify-content: space-evenly;
   align-items: center;
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     top: 590px;
     left: 10px;
     width: 180px;
@@ -34,7 +36,7 @@ const ToolWrapper = styled.div`
 const FlexSeparator = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 `;
 const IconWrapper = styled.div`
@@ -62,7 +64,7 @@ const Tool = () => {
   const [isPortrait, setPortrait] = useRecoilState(isPortraitAtom);
 
   useEffect(() => {
-    setPortrait(window.innerWidth < 800);
+    setPortrait(window.innerWidth < LANDSCAPE_WIDTH);
   }, []);
 
   const tool = (
@@ -76,6 +78,11 @@ const Tool = () => {
       <IconWrapper onClick={() => isPainter && socket.emit('canvas/reset')}>
         <Arrow />
       </IconWrapper>
+      {isPortrait && (
+        <IconWrapper>
+          <ColorSelector />
+        </IconWrapper>
+      )}
     </>
   );
 

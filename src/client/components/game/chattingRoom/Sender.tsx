@@ -1,13 +1,14 @@
 import styled from 'styled-components';
 import { ChangeEvent, KeyboardEvent, useState } from 'react';
 import socket from 'client/config/socket';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 
 const SenderWrapper = styled.div`
   position: relative;
   width: 300px;
   height: 60px;
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     position: fixed;
     bottom: 0;
     right: calc(50% - 250px);
