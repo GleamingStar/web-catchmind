@@ -34,7 +34,7 @@ const Main = () => {
   const setLeftSpace = useSetRecoilState(leftSpaceAtom);
 
   const setHeight = useCallback(
-    throttle(() => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`), 100),
+    throttle(() => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`), 20),
     []
   );
 
