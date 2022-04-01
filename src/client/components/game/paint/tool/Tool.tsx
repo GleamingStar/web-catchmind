@@ -8,6 +8,7 @@ import socket from 'client/config/socket';
 import { LANDSCAPE_WIDTH } from 'shared/constant';
 import Thickness from './Thickness';
 import Palette from './Palette';
+import ColorSelector from './ColorSelector';
 
 const ToolWrapper = styled.div`
   position: absolute;
@@ -35,7 +36,7 @@ const ToolWrapper = styled.div`
 const FlexSeparator = styled.div`
   width: 100%;
   display: flex;
-  justify-content: space-evenly;
+  justify-content: space-around;
   align-items: center;
 `;
 const IconWrapper = styled.div`
@@ -77,6 +78,11 @@ const Tool = () => {
       <IconWrapper onClick={() => isPainter && socket.emit('canvas/reset')}>
         <Arrow />
       </IconWrapper>
+      {isPortrait && (
+        <IconWrapper>
+          <ColorSelector />
+        </IconWrapper>
+      )}
     </>
   );
 
