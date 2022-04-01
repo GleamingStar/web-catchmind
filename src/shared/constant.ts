@@ -30,4 +30,8 @@ export const ROOM_ALERT_MESSAGE = {
 
 export const COLOR = ['#000000', '#ff0000', '#ffff00', '#00ff00', '#00ffff', '#0000ff', '#ff00ff'];
 
+export const LANDSCAPE_WIDTH = 800;
+
+export const PORTRAIT_WIDTH = 500;
+
 export const CANVAS_SIZE = 492;

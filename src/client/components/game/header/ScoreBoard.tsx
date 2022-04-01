@@ -3,6 +3,7 @@ import { useRecoilValue } from 'recoil';
 import { isScoreBoardOnSelector } from 'client/atom/headerAtom';
 import { gameAtom, scoreSelector } from 'client/atom/gameAtom';
 import User from 'client/components/common/User';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 
 const ScoreBoardWrapper = styled.div<{ isActivated: boolean }>`
   position: absolute;
@@ -14,7 +15,7 @@ const ScoreBoardWrapper = styled.div<{ isActivated: boolean }>`
   right: 10px;
   transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '260px'})`};
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     top: 80px;
     left: 0;
     width: 200px;

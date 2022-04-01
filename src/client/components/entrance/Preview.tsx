@@ -1,8 +1,8 @@
 import styled from 'styled-components';
 import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { imageUrlAtom, userImageSelector, userNameAtom } from 'client/atom/accountAtom';
-import { makeHash } from 'client/config/util';
 import User from 'client/components/common/User';
+import { makeHash } from 'shared/util';
 
 const PreviewWrapper = styled.div`
   position: absolute;

@@ -6,6 +6,7 @@ import { gameAtom } from 'client/atom/gameAtom';
 import socket from 'client/config/socket';
 import Waiting from 'client/components/common/Waiting';
 import Playing from 'client/components/common/Playing';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 import UserList from './UserList';
 import ScoreBoard from './ScoreBoard';
 
@@ -15,7 +16,7 @@ const HeaderWrapper = styled.div`
   right: 0;
   width: 300px;
   height: 80px;
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     top: 500px;
     left: 0;
     width: 200px;

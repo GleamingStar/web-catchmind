@@ -1,6 +1,6 @@
 import { atom, selector } from 'recoil';
 import socket from 'client/config/socket';
-import { CANVAS_SIZE } from 'shared/constant';
+import { CANVAS_SIZE, LANDSCAPE_WIDTH, PORTRAIT_WIDTH } from 'shared/constant';
 import { TCanvas } from 'shared/types';
 
 const isMobileChrome = /Chrome/g.test(navigator.userAgent) && /Mobile Safari/g.test(navigator.userAgent);
@@ -29,7 +29,7 @@ export const contextAtom = atom<CanvasRenderingContext2D>({
 
         const reset = () => ctx.clearRect(0, 0, CANVAS_SIZE, CANVAS_SIZE);
 
-        const MobileChromeReset = () => {
+        const mobileChromeReset = () => {
           reset();
           ctx.beginPath();
           ctx.moveTo(0, 0);
@@ -39,7 +39,7 @@ export const contextAtom = atom<CanvasRenderingContext2D>({
           ctx.closePath();
         };
 
-        const resetHandler = isMobileChrome ? MobileChromeReset : reset;
+        const resetHandler = isMobileChrome ? mobileChromeReset : reset;
 
         socket.on('canvas/reset', resetHandler);
 
@@ -56,7 +56,8 @@ export const contextAtom = atom<CanvasRenderingContext2D>({
 });
 
 const width = window.innerWidth;
-const defaultLeftSpace = width > 800 ? (width - 800) / 2 : width > 500 ? (width - 500) / 2 : 0;
+const defaultLeftSpace =
+  width > LANDSCAPE_WIDTH ? (width - LANDSCAPE_WIDTH) / 2 : width > PORTRAIT_WIDTH ? (width - PORTRAIT_WIDTH) / 2 : 0;
 
 export const leftSpaceAtom = atom({
   key: 'leftSpace',
