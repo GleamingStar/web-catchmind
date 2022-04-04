@@ -71,6 +71,8 @@ export const zoomOutAlertAtom = atom({
   default: visualViewport.width < 499,
   effects: [
     ({ setSelf }) => {
+      if (visualViewport.width > 499) return;
+
       const evCache: Array<PointerEvent> = [];
       let prevDiff = -1;
 

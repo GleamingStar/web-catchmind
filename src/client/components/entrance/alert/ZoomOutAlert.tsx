@@ -5,7 +5,8 @@ import { PORTRAIT_WIDTH } from 'shared/constant';
 
 const RATIO = visualViewport.width / PORTRAIT_WIDTH;
 
-const ZoomOutAlertWrapper = styled.div<{ isActivated: boolean }>`
+const ZoomOutAlertWrapper = styled.div``;
+const ParagraphWrapper = styled.div<{ isActivated: boolean }>`
   position: fixed;
   top: ${RATIO * 15}px;
   left: ${RATIO * 250}px;
@@ -14,9 +15,7 @@ const ZoomOutAlertWrapper = styled.div<{ isActivated: boolean }>`
   border: solid 2px #cdb699;
 
   font-size: ${RATIO * 15}px;
-
-  transform: ${({ isActivated }) => `translate(-50%, ${isActivated ? 0 : -1000}px)`};
-
+  transform: ${({ isActivated }) => `translate(-50%, ${isActivated ? 0 : -105 * RATIO}px)`};
   transition: transform 1.2s ease-out;
 `;
 const Paragraph = styled.div`
@@ -26,13 +25,20 @@ const Paragraph = styled.div`
     margin-top: 5px;
   }
 `;
-const GestureWrapper = styled.div`
+const GestureWrapper = styled.div<{ isActivated: boolean }>`
+  position: absolute;
+  top: 0;
+  left: 0;
   color: #733c3c;
+
+  opacity: ${({ isActivated }) => (isActivated ? 0.99 : 0)};
+
+  transition: opacity 1.2s ease-out;
 `;
 const ArrowLeftWrapper = styled.div`
   position: absolute;
   top: calc(calc(var(--vh, 1vh) * 100 - 240px) * ${RATIO});
-  left: ${RATIO * -20}px;
+  left: ${RATIO * 20}px;
   transform: rotate(-50deg);
 
   @keyframes zoomoutleft {
@@ -46,7 +52,7 @@ const ArrowLeftWrapper = styled.div`
 const ArrowRightWrapper = styled.div`
   position: absolute;
   top: ${RATIO * 140}px;
-  left: ${RATIO * 380}px;
+  left: ${RATIO * 420}px;
   transform: rotate(130deg);
 
   @keyframes zoomoutright {
@@ -62,18 +68,22 @@ const ZoomOutAlert = () => {
   const isActivated = useRecoilValue(zoomOutAlertAtom);
 
   return (
-    <ZoomOutAlertWrapper isActivated={isActivated}>
+    <ZoomOutAlertWrapper>
+      <ParagraphWrapper isActivated={isActivated}>
+        <Paragraph>이 사이트는 모바일 환경에서 가로 {PORTRAIT_WIDTH}px에 맞춰 설계되었습니다.</Paragraph>
+        <Paragraph>화면을 축소해 원치않는 스크롤을 방지해주세요.</Paragraph>
+        <Paragraph>그림을 그리는 과정에서 성능 저하가 발생할 수 있습니다.</Paragraph>
+      </ParagraphWrapper>
       <Gesture />
-      <Paragraph>이 사이트는 모바일 환경에서 가로 {PORTRAIT_WIDTH}px에 맞춰 설계되었습니다.</Paragraph>
-      <Paragraph>화면을 축소해 원치않는 스크롤을 방지해주세요.</Paragraph>
-      <Paragraph>그림을 그리는 과정에서 성능 저하가 발생할 수 있습니다.</Paragraph>
     </ZoomOutAlertWrapper>
   );
 };
 
 const Gesture = () => {
+  const isActivated = useRecoilValue(zoomOutAlertAtom);
+
   return (
-    <GestureWrapper>
+    <GestureWrapper isActivated={isActivated}>
       <ArrowLeftWrapper>
         <Arrow />
       </ArrowLeftWrapper>
