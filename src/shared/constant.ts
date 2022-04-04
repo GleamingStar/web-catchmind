@@ -35,3 +35,7 @@ export const LANDSCAPE_WIDTH = 800;
 export const PORTRAIT_WIDTH = 500;
 
 export const CANVAS_SIZE = 492;
+
+export const DRAWING_SCORE = 1;
+
+export const ANSWER_SCORE = 3;

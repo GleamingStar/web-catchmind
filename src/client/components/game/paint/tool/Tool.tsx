@@ -1,6 +1,5 @@
 import styled from 'styled-components';
-import { useEffect } from 'react';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { isPainterSelector } from 'client/atom/gameAtom';
 import { toolAtom } from 'client/atom/canvasAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
@@ -61,11 +60,7 @@ const IconWrapper = styled.div`
 const Tool = () => {
   const setTool = useSetRecoilState(toolAtom);
   const isPainter = useRecoilValue(isPainterSelector);
-  const [isPortrait, setPortrait] = useRecoilState(isPortraitAtom);
-
-  useEffect(() => {
-    setPortrait(window.innerWidth < LANDSCAPE_WIDTH);
-  }, []);
+  const isPortrait = useRecoilValue(isPortraitAtom);
 
   const tool = (
     <>

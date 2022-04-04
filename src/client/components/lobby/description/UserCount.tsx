@@ -1,17 +1,14 @@
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
-import { userCountAtom } from 'client/atom/miscAtom';
+import { isPortraitAtom, userCountAtom } from 'client/atom/miscAtom';
 
 const UserCountWrapper = styled.div`
-  position: absolute;
-  top: 40px;
-  left: 40px;
-
-  color: #596e79;
-
   display: flex;
+  align-items: center;
 `;
-const Title = styled.div``;
+const Title = styled.div`
+  margin-right: 10px;
+`;
 const Count = styled.div`
   margin-left: 10px;
   font-size: 18px;
@@ -19,11 +16,11 @@ const Count = styled.div`
 
 const UserCount = () => {
   const count = useRecoilValue(userCountAtom);
+  const isPortrait = useRecoilValue(isPortraitAtom);
   return (
     <UserCountWrapper>
-      <Title title="현재 접속 인원">
-        <People />
-      </Title>
+      {isPortrait || <Title>현재 접속 인원</Title>}
+      <People />
       <Count>{count}</Count>
     </UserCountWrapper>
   );
