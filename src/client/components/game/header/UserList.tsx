@@ -9,11 +9,11 @@ const UserListWrapper = styled.div<{ isActivated: boolean }>`
   position: absolute;
 
   padding: 10px;
-  width: 210px;
   max-height: 300px;
   top: 90px;
   right: 10px;
   transform: ${({ isActivated }) => `translateX(${isActivated ? '0px' : '220px'})`};
+
   @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     top: 80px;
     left: 0;

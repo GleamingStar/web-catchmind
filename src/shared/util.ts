@@ -25,3 +25,5 @@ export const throttle = (callback: Function, delay: number) => {
     setTimeout(() => (isWaiting = true), delay);
   };
 };
+
+export const delay = (time: number) => new Promise((res, _) => setTimeout(res, time));

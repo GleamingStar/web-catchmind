@@ -3,9 +3,8 @@ import chat from 'server/socket/chat';
 import mockupData from 'shared/answers.json';
 import { ANSWER_SCORE, DRAWING_SCORE, MAX_GAME_ROUND } from 'shared/constant';
 import { TGame, TUser } from 'shared/types';
+import { delay } from 'shared/util';
 import roomManager from './room';
-
-const delay = (time: number) => new Promise((res, _) => setTimeout(res, time));
 
 class GameManager {
   games: Array<TGame>;
