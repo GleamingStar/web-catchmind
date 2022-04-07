@@ -1,5 +1,4 @@
 import { Server, Socket } from 'socket.io';
-import { PROFILE_IMAGE_SIZE } from 'shared/constant';
 import { TUser } from 'shared/types';
 
 let userList: Array<TUser> = [];
@@ -7,13 +6,13 @@ let userList: Array<TUser> = [];
 let userId = 0;
 
 const setUserEvent = (io: Server, socket: Socket) => {
-  socket.on('login', (name: string) => {
+  socket.on('login', (name: string, imgUrl: string) => {
     if (userList.filter((user) => user.name === name).length > 0) return socket.emit('login/fail/duplicate');
 
     const user = {
-      id: userId,
+      id: userId++,
       name,
-      imgUrl: `http://gravatar.com/avatar/${userId++}?d=identicon&s=${PROFILE_IMAGE_SIZE}`,
+      imgUrl,
     };
 
     userList.push(user);

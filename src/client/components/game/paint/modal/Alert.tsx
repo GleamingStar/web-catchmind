@@ -30,7 +30,7 @@ const Alert = () => {
   const [isActivated, setActivated] = useState(false);
 
   useEffect(() => {
-    if (game?.painter.id !== account?.id || game.status === 'WAITING') return;
+    if (game?.painter.id !== account?.id || game?.status === 'WAITING') return;
     setActivated(true);
     setTimeout(() => setActivated(false), 5000);
   }, [game, account]);

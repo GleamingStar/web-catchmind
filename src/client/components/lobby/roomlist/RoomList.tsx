@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { useRecoilValue } from 'recoil';
 import { roomListAtom } from 'client/atom/roomAtom';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 import NewRoom from './NewRoom';
 import Room from './Room';
 
@@ -9,7 +10,11 @@ const RoomListWrapper = styled.div`
   top: 20px;
   right: 20px;
   padding: 20px;
-  height: calc(100% - 40px);
+  height: 560px;
+
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
+    height: calc(var(--vh, 1vh) * 100 - 40px);
+  }
 
   display: flex;
   flex-direction: column;

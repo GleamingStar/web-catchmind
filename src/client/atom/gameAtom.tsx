@@ -2,6 +2,7 @@ import { atom, selector } from 'recoil';
 import socket from 'client/config/socket';
 import { MAX_SET_TIMER } from 'shared/constant';
 import { TGame } from 'shared/types';
+import { debounce } from 'shared/util';
 import { accountAtom } from './accountAtom';
 
 export const gameAtom = atom<TGame>({
@@ -78,23 +79,20 @@ export const isEndAtom = atom({
   default: false,
   effects: [
     ({ setSelf, resetSelf }) => {
-      const RESET_TIMER = 5000;
-
-      let timer;
+      const debouncedReset = debounce(resetSelf, 5000);
 
       const endHandler = () => {
-        clearTimeout(timer);
         setSelf(true);
-        timer = setTimeout(resetSelf, RESET_TIMER);
+        debouncedReset();
       };
 
       socket.on('game/end', endHandler);
-      socket.on('room/leave', resetSelf)
+      socket.on('room/leave', resetSelf);
       socket.on('game/set/start', resetSelf);
-      
+
       return () => {
         socket.off('game/end', endHandler);
-        socket.off('room/leave', resetSelf)
+        socket.off('room/leave', resetSelf);
         socket.off('game/set/start', resetSelf);
       };
     },

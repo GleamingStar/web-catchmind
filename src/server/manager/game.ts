@@ -1,11 +1,10 @@
 import { Server } from 'socket.io';
 import chat from 'server/socket/chat';
-import { TGame, TUser } from 'shared/types';
-import { MAX_GAME_ROUND } from 'shared/constant';
 import mockupData from 'shared/answers.json';
+import { ANSWER_SCORE, DRAWING_SCORE, MAX_GAME_ROUND } from 'shared/constant';
+import { TGame, TUser } from 'shared/types';
+import { delay } from 'shared/util';
 import roomManager from './room';
-
-const delay = (time: number) => new Promise((res, _) => setTimeout(res, time));
 
 class GameManager {
   games: Array<TGame>;
@@ -142,8 +141,8 @@ class GameManager {
 
   setScore(targetId: number, painterId: number, answerId: number) {
     const { score } = this.getGame(targetId);
-    score[score.findIndex(({ user }) => user.id === painterId)].value++;
-    score[score.findIndex(({ user }) => user.id === answerId)].value += 3;
+    score[score.findIndex(({ user }) => user.id === painterId)].value += DRAWING_SCORE;
+    score[score.findIndex(({ user }) => user.id === answerId)].value += ANSWER_SCORE;
   }
 }
 

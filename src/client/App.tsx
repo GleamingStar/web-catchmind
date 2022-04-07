@@ -6,7 +6,7 @@ const Main = lazy(() => import('./components/Main'));
 const App = () => (
   <RecoilRoot>
     <GlobalStyle />
-    <Suspense fallback={<></>}>
+    <Suspense fallback={null}>
       <Main />
     </Suspense>
   </RecoilRoot>

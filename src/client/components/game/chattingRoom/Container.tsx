@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { useEffect, useRef } from 'react';
 import { useRecoilValue } from 'recoil';
 import { chatLogAtom } from 'client/atom/chatAtom';
+import { LANDSCAPE_WIDTH } from 'shared/constant';
 import Chat from './Chat';
 
 const ContainerWrapper = styled.div`
@@ -9,7 +10,7 @@ const ContainerWrapper = styled.div`
   padding: 10px;
   width: 300px;
   height: 460px;
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
     position: fixed;
     bottom: 60px;
     right: calc(50% - 250px);

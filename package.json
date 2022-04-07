@@ -1,6 +1,6 @@
 {
   "name": "catch-mind",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "drawing and guessing game web application",
   "scripts": {
     "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
@@ -10,12 +10,10 @@
   "author": "GleamingStar (tjdduddl10@gmail.com)",
   "license": "MIT",
   "dependencies": {
-    "axios": "^0.25.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-icons": "^4.3.1",
     "recoil": "^0.6.1",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
