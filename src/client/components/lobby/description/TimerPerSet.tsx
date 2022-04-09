@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 import { MAX_SET_TIMER } from 'shared/constant';
 
@@ -17,7 +17,7 @@ const Count = styled.div`
 `;
 
 const TimerPerSet = () => {
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
   return (
     <TimerPerSetWrapper>
       {isPortrait || <Title>세트당 주어진 시간</Title>}

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValue_TRANSITION_SUPPORT_UNSTABLE, useSetRecoilState } from 'recoil';
 import { colorAtom, isPaletteOnSelector, toggleCanvasModalAtom, toolAtom } from 'client/atom/canvasAtom';
 import { COLOR } from 'shared/constant';
 import { isPortraitAtom } from 'client/atom/miscAtom';
@@ -65,7 +65,7 @@ const Palette = () => {
   const toggle = useSetRecoilState(toggleCanvasModalAtom);
   const isActivated = useRecoilValue(isPaletteOnSelector);
   const [currentColor, setColor] = useRecoilState(colorAtom);
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
 
   const colors = COLOR.map((color) => (
     <Color

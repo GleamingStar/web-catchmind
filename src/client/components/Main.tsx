@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import { lazy, Suspense, useCallback, useEffect } from 'react';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { lazy, startTransition, Suspense, useCallback, useEffect } from 'react';
+import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE, useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { leftSpaceAtom } from 'client/atom/canvasAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
+import { isPortraitAtom } from 'client/atom/miscAtom';
 import { LANDSCAPE_WIDTH, PORTRAIT_WIDTH } from 'shared/constant';
-import { debounce, throttle } from 'shared/util';
+import { throttle } from 'shared/util';
 import Entrance from './entrance/Entrance';
 const Lobby = lazy(() => import('./lobby/Lobby'));
 const Game = lazy(() => import('./game/Game'));
@@ -31,26 +32,25 @@ const MainWrapper = styled.div`
 const Main = () => {
   const isLogined = useRecoilValue(accountAtom) !== null;
   const isInRoom = useRecoilValue(currentRoomIndexAtom) !== null;
-  const setLeftSpace = useSetRecoilState(leftSpaceAtom);
+  const [_, setLeftSpace] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(leftSpaceAtom);
+  const [__, setPortrait] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
 
   const setHeight = useCallback(
     throttle(() => document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`), 20),
     []
   );
 
-  const setLeft = useCallback(
-    debounce(() => {
-      const width = window.innerWidth;
-      if (width > LANDSCAPE_WIDTH) setLeftSpace((width - LANDSCAPE_WIDTH) / 2);
-      else if (width > PORTRAIT_WIDTH) setLeftSpace((width - PORTRAIT_WIDTH) / 2);
-    }, 250),
-    []
-  );
+  const setLeft = () => {
+    const width = window.innerWidth;
+    setPortrait(width <= LANDSCAPE_WIDTH);
+    if (width > LANDSCAPE_WIDTH) setLeftSpace((width - LANDSCAPE_WIDTH) / 2);
+    else if (width > PORTRAIT_WIDTH) setLeftSpace((width - PORTRAIT_WIDTH) / 2);
+  };
 
   useEffect(() => {
     const resizeHandler = () => {
       setHeight();
-      setLeft();
+      startTransition(() => setLeft());
     };
 
     window.addEventListener('resize', resizeHandler);

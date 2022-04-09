@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilValue_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { isPortraitAtom, userCountAtom } from 'client/atom/miscAtom';
 
 const UserCountWrapper = styled.div`
@@ -16,7 +16,7 @@ const Count = styled.div`
 
 const UserCount = () => {
   const count = useRecoilValue(userCountAtom);
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
   return (
     <UserCountWrapper>
       {isPortrait || <Title>현재 접속 인원</Title>}

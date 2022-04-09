@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilValue, useRecoilValue_TRANSITION_SUPPORT_UNSTABLE, useSetRecoilState } from 'recoil';
 import { isPainterSelector } from 'client/atom/gameAtom';
 import { toolAtom } from 'client/atom/canvasAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
@@ -60,7 +60,7 @@ const IconWrapper = styled.div`
 const Tool = () => {
   const setTool = useSetRecoilState(toolAtom);
   const isPainter = useRecoilValue(isPainterSelector);
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
 
   const tool = (
     <>
