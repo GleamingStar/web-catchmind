@@ -6,6 +6,7 @@ import { currentRoomIndexAtom } from 'client/atom/roomAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 import { LANDSCAPE_WIDTH, PORTRAIT_WIDTH } from 'shared/constant';
 import { throttle } from 'shared/util';
+import Spinner from './common/Spinner';
 import Entrance from './entrance/Entrance';
 const Lobby = lazy(() => import('./lobby/Lobby'));
 const Game = lazy(() => import('./game/Game'));
@@ -47,7 +48,7 @@ const MainContents = () => {
     };
   }, []);
 
-  return <Suspense fallback={null}>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}</Suspense>;
+  return <Suspense fallback={<Spinner size={200} />}>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}</Suspense>;
 };
 
 export default Main;

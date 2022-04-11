@@ -3,8 +3,8 @@ import RoomList from './roomlist/RoomList';
 import Description from './description/Description';
 
 const LobbyWrapper = styled.div`
-  position: relative;
   height: 100%;
+  width: 100%;
 `;
 
 const Lobby = () => (

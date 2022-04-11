@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { lazy, Suspense } from 'react';
 import { LANDSCAPE_WIDTH, PORTRAIT_WIDTH } from 'shared/constant';
 import GlobalStyle from './config/GlobalStyle';
+import Spinner from './components/common/Spinner';
 const Main = lazy(() => import('./components/Main'));
 
 const AppWrapper = styled.div`
@@ -20,12 +21,16 @@ const AppWrapper = styled.div`
   overflow: hidden;
 
   user-select: none;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const App = () => (
   <AppWrapper>
     <GlobalStyle />
-    <Suspense fallback={null}>
+    <Suspense fallback={<Spinner size={500} />}>
       <Main />
     </Suspense>
   </AppWrapper>
