@@ -1,6 +1,5 @@
-import styled from 'styled-components';
 import { lazy, startTransition, Suspense, useCallback, useEffect } from 'react';
-import { useRecoilState_TRANSITION_SUPPORT_UNSTABLE, useRecoilValue } from 'recoil';
+import { RecoilRoot, useRecoilState_TRANSITION_SUPPORT_UNSTABLE, useRecoilValue } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { leftSpaceAtom } from 'client/atom/canvasAtom';
 import { currentRoomIndexAtom } from 'client/atom/roomAtom';
@@ -11,25 +10,13 @@ import Entrance from './entrance/Entrance';
 const Lobby = lazy(() => import('./lobby/Lobby'));
 const Game = lazy(() => import('./game/Game'));
 
-const MainWrapper = styled.div`
-  position: relative;
+const Main = () => (
+  <RecoilRoot>
+    <MainContents />
+  </RecoilRoot>
+);
 
-  width: ${LANDSCAPE_WIDTH}px;
-  height: 600px;
-
-  @media screen and (max-width: ${LANDSCAPE_WIDTH}px) {
-    width: ${PORTRAIT_WIDTH}px;
-    min-height: 700px;
-    height: calc(var(--vh, 1vh) * 100);
-  }
-
-  background-color: #dfd3c3;
-  overflow: hidden;
-
-  user-select: none;
-`;
-
-const Main = () => {
+const MainContents = () => {
   const isLogined = useRecoilValue(accountAtom) !== null;
   const isInRoom = useRecoilValue(currentRoomIndexAtom) !== null;
   const [_, setLeftSpace] = useRecoilState_TRANSITION_SUPPORT_UNSTABLE(leftSpaceAtom);
@@ -60,11 +47,7 @@ const Main = () => {
     };
   }, []);
 
-  return (
-    <MainWrapper>
-      <Suspense fallback={null}>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}</Suspense>
-    </MainWrapper>
-  );
+  return <Suspense fallback={null}>{isLogined ? isInRoom ? <Game /> : <Lobby /> : <Entrance />}</Suspense>;
 };
 
 export default Main;
