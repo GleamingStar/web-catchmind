@@ -1,7 +1,6 @@
 import { atom } from 'recoil';
 import socket from 'client/config/socket';
 import { LANDSCAPE_WIDTH, LOGIN_ALERT_MESSAGE, ROOM_ALERT_MESSAGE } from 'shared/constant';
-import { debounce } from 'shared/util';
 
 export const loginAlertAtom = atom({
   key: 'loginAlert',
@@ -133,16 +132,5 @@ export const zoomOutAlertAtom = atom({
 
 export const isPortraitAtom = atom({
   key: 'isPortrait',
-  default: window.innerWidth < LANDSCAPE_WIDTH,
-  effects: [
-    ({ setSelf }) => {
-      const resizeHandler = debounce(() => setSelf(window.innerWidth < LANDSCAPE_WIDTH), 100);
-
-      window.addEventListener('resize', resizeHandler);
-
-      return () => {
-        window.removeEventListener('resize', resizeHandler);
-      };
-    },
-  ],
+  default: window.innerWidth <= LANDSCAPE_WIDTH,
 });

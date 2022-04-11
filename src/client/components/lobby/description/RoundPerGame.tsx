@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 import { MAX_GAME_ROUND } from 'shared/constant';
 
@@ -17,7 +17,7 @@ const Count = styled.div`
 `;
 
 const RoundPerGame = () => {
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
   return (
     <RoundPerGameWrapper>
       {isPortrait || <Title>게임당 진행 라운드</Title>}
