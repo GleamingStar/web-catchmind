@@ -67,6 +67,15 @@ export const leftSpaceAtom = atom({
 export const toolAtom = atom<'pencil' | 'eraser'>({
   key: 'tool',
   default: 'pencil',
+  effects: [
+    ({ resetSelf }) => {
+      socket.on('game/set/start', resetSelf);
+
+      return () => {
+        socket.off('game/set/start', resetSelf);
+      };
+    },
+  ],
 });
 
 export const thicknessAtom = atom({
