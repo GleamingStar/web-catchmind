@@ -4,7 +4,7 @@
   "description": "drawing and guessing game web application",
   "scripts": {
     "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
-    "build": "webpack --mode production --config ./webpack.server.js && webpack --config ./webpack.client.prod.js && node dist/server.js",
+    "build": "webpack --mode production --config ./webpack.server.js && webpack --config ./webpack.client.prod.js",
     "tsc": "tsc --noEmit"
   },
   "author": "GleamingStar (tjdduddl10@gmail.com)",
