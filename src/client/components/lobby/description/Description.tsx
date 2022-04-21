@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 import { ANSWER_SCORE, DRAWING_SCORE, MAX_GAME_ROUND } from 'shared/constant';
 import RoundPerGame from './RoundPerGame';
@@ -24,7 +24,7 @@ const DetailParagraph = styled.div`
 `;
 
 const Description = () => {
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
   return (
     <DescriptionWrapper>
       <UserCount />

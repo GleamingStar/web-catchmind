@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValue_TRANSITION_SUPPORT_UNSTABLE } from 'recoil';
 import { accountAtom } from 'client/atom/accountAtom';
 import { colorAtom, contextAtom, cursorSelector, leftSpaceAtom, thicknessAtom, toolAtom } from 'client/atom/canvasAtom';
 import { currentRoomSelector } from 'client/atom/roomAtom';
@@ -32,7 +32,7 @@ const Board = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const [ctx, setCtx] = useRecoilState(contextAtom);
-  const leftSpace = useRecoilValue(leftSpaceAtom);
+  const leftSpace = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(leftSpaceAtom);
   const [tool, setTool] = useRecoilState(toolAtom);
   const [thickness, setThickness] = useRecoilState(thicknessAtom);
   const [color, setColor] = useRecoilState(colorAtom);

@@ -1,0 +1,53 @@
+name: deploy
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, reopened]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+
+      - name: Create env file
+        run: |
+          touch .env
+          cat << EOF >> .env
+          ${{ secrets.ENV }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: bulid file
+        run: npm run build
+
+      - name: zip distributions
+        run: zip -r deploy.zip ./dist ./appspec.yml ./scripts ./node_modules
+
+      - name: AWS configure credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./deploy.zip s3://catchmind-bucket/public/
+
+      - name: deploy with AWS codeDeploy
+        run: aws deploy create-deployment
+          --application-name codedeploy
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name codedeployer
+          --s3-location bucket=catchmind-bucket,bundleType=zip,key=public/deploy.zip

@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useRecoilValue_TRANSITION_SUPPORT_UNSTABLE, useSetRecoilState } from 'recoil';
 import { isThicknessOnSelector, thicknessAtom, toggleCanvasModalAtom } from 'client/atom/canvasAtom';
 import { isPortraitAtom } from 'client/atom/miscAtom';
 
@@ -69,7 +69,7 @@ const LineContent = styled.div<{ height: number }>`
 const Thickness = () => {
   const toggle = useSetRecoilState(toggleCanvasModalAtom);
   const isActivated = useRecoilValue(isThicknessOnSelector);
-  const isPortrait = useRecoilValue(isPortraitAtom);
+  const isPortrait = useRecoilValue_TRANSITION_SUPPORT_UNSTABLE(isPortraitAtom);
 
   const lines = [1, 2, 4, 6, 8, 16].map((e) => <Line key={e} height={e} />);
 
