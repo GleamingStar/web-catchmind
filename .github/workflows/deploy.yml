@@ -3,6 +3,7 @@ name: deploy
 on:
   pull_request:
     branches: [main]
+    types: [opened, reopened]
 
 jobs:
   build:
@@ -32,7 +33,7 @@ jobs:
         run: npm run build
 
       - name: zip distributions
-        run: zip -r deploy.zip ./dist ./appspec.yml ./scripts ./package.json ./node_modules ./webpack.client.prod.js ./bablerc
+        run: zip -r deploy.zip ./dist ./appspec.yml ./scripts ./node_modules
 
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
