@@ -1,6 +1,6 @@
 {
   "name": "catch-mind",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "drawing and guessing game web application",
   "scripts": {
     "start": "webpack --mode development --config ./webpack.server.js && node dist/server.js",
